@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Horta em Casa — Painel Gerencial</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --g1:#1b4332;--g2:#2d6a4f;--g3:#40916c;--g4:#52b788;
+  --gp:#d8f3dc;--gpp:#f0faf3;
+  --terra:#c9a14a;--terra-l:#fef3d7;
+  --creme:#faf7f0;--escuro:#1a1a2e;
+  --cinza:#6b7280;--cinza-l:#e5e7eb;
+  --branco:#fff;--danger:#dc2626;
+  --azul:#1d4ed8;--azul-l:#dbeafe;
+  --amarelo-d:#92400e;--amarelo-l:#fef9c3;
+  --r:14px;--sh:0 2px 16px rgba(45,106,79,.10);--sh2:0 8px 32px rgba(45,106,79,.18);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Inter',sans-serif;background:var(--creme);color:var(--escuro);min-height:100vh;}
+
+/* LOGIN */
+#tela-login{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(160deg,var(--g1) 0%,var(--g2) 50%,var(--terra) 100%);}
+.login-box{background:rgba(255,255,255,.1);backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:2.2rem 2rem;width:100%;max-width:340px;text-align:center;}
+.login-logo{font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;color:#fff;margin-bottom:.2rem;}
+.login-logo em{font-style:italic;color:var(--terra);}
+.login-role{display:inline-block;background:rgba(201,161,74,.3);color:#fde68a;font-size:.75rem;font-weight:600;padding:.25rem .8rem;border-radius:50px;margin-bottom:1.2rem;letter-spacing:.06em;text-transform:uppercase;border:1px solid rgba(201,161,74,.4);}
+.login-sub{color:rgba(255,255,255,.65);font-size:.85rem;margin-bottom:1.5rem;}
+.login-inp{width:100%;padding:.75rem 1rem;border-radius:50px;border:none;font-size:1.2rem;font-family:'Inter',sans-serif;outline:none;text-align:center;letter-spacing:.3em;margin-bottom:.8rem;}
+.login-err{color:#fca5a5;font-size:.82rem;margin-bottom:.6rem;display:none;}
+.btn-login{width:100%;background:var(--terra);color:#fff;border:none;border-radius:50px;padding:.85rem;font-size:1rem;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;transition:opacity .2s;}
+.btn-login:hover{opacity:.9;}
+.link-voltar{margin-top:.8rem;background:none;border:none;color:rgba(255,255,255,.5);font-size:.8rem;cursor:pointer;font-family:'Inter',sans-serif;display:block;width:100%;}
+
+/* APP */
+#app{display:none;min-height:100vh;}
+.topbar{background:var(--marrom);color:#fff;padding:.85rem 1.2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 16px rgba(0,0,0,.25);}
+.tlogo{font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:700;}
+.tlogo em{font-style:italic;color:var(--terra);}
+.trole{font-size:.68rem;color:rgba(255,255,255,.55);text-transform:uppercase;letter-spacing:.07em;margin-top:.1rem;}
+.topright{display:flex;align-items:center;gap:.8rem;}
+.tbtn{background:rgba(255,255,255,.15);border:none;color:#fff;padding:.4rem .9rem;border-radius:50px;cursor:pointer;font-size:.82rem;font-family:'Inter',sans-serif;transition:background .2s;}
+.tbtn:hover{background:rgba(255,255,255,.25);}
+.live-badge{display:flex;align-items:center;gap:.3rem;font-size:.72rem;color:rgba(255,255,255,.7);}
+.live-dot{width:8px;height:8px;border-radius:50%;background:#22c55e;animation:pulse 1.5s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+
+.admin-tabs{display:flex;background:var(--g1);overflow-x:auto;scrollbar-width:none;}
+.admin-tabs::-webkit-scrollbar{display:none;}
+.atab{flex-shrink:0;background:none;border:none;color:rgba(255,255,255,.5);padding:.85rem .9rem;font-family:'Inter',sans-serif;font-size:.82rem;font-weight:500;cursor:pointer;transition:all .2s;border-bottom:3px solid transparent;white-space:nowrap;}
+.atab.active{color:#fff;border-bottom-color:var(--terra);}
+.apanel{display:none;}
+.apanel.active{display:block;animation:fi .2s ease;}
+@keyframes fi{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.abody{max-width:1100px;margin:0 auto;padding:1.2rem;}
+
+/* HEADER DO DIA */
+.dia-header{background:linear-gradient(135deg,var(--g2),var(--g3));color:#fff;padding:1.5rem 1.3rem;border-radius:var(--r);margin-bottom:1.3rem;position:relative;overflow:hidden;}
+.dia-header::after{content:'🌿';position:absolute;right:1rem;top:50%;transform:translateY(-50%);font-size:5rem;opacity:.1;}
+.dia-data{font-size:.8rem;opacity:.7;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.2rem;}
+.dia-titulo{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;margin-bottom:.15rem;}
+.dia-sub{font-size:.82rem;opacity:.75;}
+
+/* KPIs */
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:.8rem;margin-bottom:1.3rem;}
+.kpi{background:var(--branco);border-radius:var(--r);padding:1rem 1.1rem;box-shadow:var(--sh);text-align:center;border-top:3px solid var(--g4);transition:transform .2s;}
+.kpi:hover{transform:translateY(-2px);}
+.kpi.terra{border-top-color:var(--terra);}
+.kpi.azul{border-top-color:#3b82f6;}
+.kpi.verde-esc{border-top-color:var(--g1);}
+.kv{font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--g2);font-weight:700;line-height:1.1;}
+.kpi.terra .kv{color:var(--terra);}
+.kpi.azul .kv{color:#1d4ed8;}
+.kl{font-size:.72rem;color:var(--cinza);margin-top:.2rem;}
+
+/* STATUS KANBAN */
+.kanban{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:.8rem;margin-bottom:1.5rem;}
+.kancol{background:var(--branco);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;}
+.kancol-head{padding:.7rem 1rem;font-weight:600;font-size:.82rem;display:flex;align-items:center;justify-content:space-between;}
+.kancol-head.recebido{background:var(--gp);color:var(--g2);}
+.kancol-head.preparando{background:var(--azul-l);color:var(--azul);}
+.kancol-head.saiu{background:var(--amarelo-l);color:var(--amarelo-d);}
+.kancol-head.entregue{background:#f3f4f6;color:#6b7280;}
+.kancol-count{background:rgba(0,0,0,.1);border-radius:50px;padding:.1rem .55rem;font-size:.75rem;font-weight:700;}
+.kancol-body{padding:.6rem;display:flex;flex-direction:column;gap:.4rem;min-height:60px;}
+.mini-pcard{background:var(--creme);border-radius:8px;padding:.55rem .7rem;font-size:.78rem;}
+.mp-nome{font-weight:700;margin-bottom:.15rem;}
+.mp-itens{color:var(--cinza);font-size:.72rem;line-height:1.4;}
+.mp-val{color:var(--g2);font-weight:600;font-size:.75rem;margin-top:.2rem;}
+.mp-hora{color:var(--cinza);font-size:.68rem;margin-top:.1rem;}
+
+/* PEDIDOS LISTA */
+.row-between{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem;}
+.ptitle{font-family:'Playfair Display',serif;font-size:1.35rem;color:var(--g2);}
+.pills{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1rem;}
+.pill{padding:.3rem .8rem;border-radius:50px;border:1.5px solid var(--g4);background:none;font-family:'Inter',sans-serif;font-size:.76rem;cursor:pointer;color:var(--cinza);transition:all .2s;}
+.pill.active{background:var(--g2);color:#fff;border-color:var(--g2);}
+.pcard{background:var(--branco);border-radius:var(--r);padding:1.1rem 1.2rem;margin-bottom:.8rem;box-shadow:var(--sh);border-left:4px solid var(--g4);}
+.pcard.s-preparando{border-left-color:#3b82f6;}
+.pcard.s-saiu{border-left-color:var(--terra);}
+.pcard.s-entregue{border-left-color:#9ca3af;opacity:.65;}
+.ptop{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:.4rem;margin-bottom:.6rem;}
+.pnome{font-weight:700;font-size:.95rem;}
+.pmeta{color:var(--cinza);font-size:.76rem;margin-top:.1rem;}
+.sbadge{padding:.18rem .7rem;border-radius:50px;font-size:.72rem;font-weight:600;white-space:nowrap;}
+.sb-recebido{background:var(--gp);color:var(--g2);}
+.sb-preparando{background:var(--azul-l);color:var(--azul);}
+.sb-saiu{background:var(--amarelo-l);color:var(--amarelo-d);}
+.sb-entregue{background:#f3f4f6;color:#6b7280;}
+.pitens{font-size:.83rem;color:var(--cinza);margin-bottom:.55rem;line-height:1.6;}
+.pval{color:var(--g2);font-weight:700;font-size:.88rem;}
+.empty{text-align:center;padding:2.5rem 1rem;color:var(--cinza);}
+.empty .ic{font-size:2.8rem;margin-bottom:.7rem;}
+
+/* GRÁFICO BAR */
+.grafico-card{background:var(--branco);border-radius:var(--r);padding:1.2rem;box-shadow:var(--sh);margin-bottom:1.2rem;}
+.grafico-card h3{font-family:'Playfair Display',serif;color:var(--g2);font-size:1.05rem;margin-bottom:1rem;}
+.bar-wrap{display:flex;flex-direction:column;gap:.5rem;}
+.bar-row{display:flex;align-items:center;gap:.6rem;}
+.bar-label{font-size:.76rem;color:var(--cinza);min-width:120px;text-align:right;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.bar-track{flex:1;background:var(--gpp);border-radius:50px;height:14px;overflow:hidden;}
+.bar-fill{height:100%;border-radius:50px;background:linear-gradient(90deg,var(--g3),var(--g4));transition:width .5s ease;}
+.bar-val{font-size:.74rem;font-weight:600;color:var(--g2);min-width:28px;text-align:right;}
+
+/* CLIENTES */
+.cli-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:.75rem;margin-bottom:1.2rem;}
+.clicard{background:var(--branco);border-radius:var(--r);padding:1rem;box-shadow:var(--sh);}
+.clinome{font-weight:700;font-size:.92rem;margin-bottom:.3rem;}
+.clidata{font-size:.74rem;color:var(--cinza);}
+.clistats{display:flex;gap:1rem;margin-top:.6rem;}
+.clistat .v{font-weight:700;color:var(--g2);font-size:.92rem;}
+.clistat .l{font-size:.68rem;color:var(--cinza);}
+
+/* TIMELINE */
+.timeline{position:relative;padding-left:1.5rem;}
+.timeline::before{content:'';position:absolute;left:.4rem;top:0;bottom:0;width:2px;background:var(--cinza-l);}
+.tl-item{position:relative;margin-bottom:1rem;}
+.tl-dot{position:absolute;left:-1.15rem;top:.2rem;width:12px;height:12px;border-radius:50%;border:2px solid var(--branco);}
+.tl-dot.recebido{background:var(--g4);}
+.tl-dot.preparando{background:#3b82f6;}
+.tl-dot.saiu{background:var(--terra);}
+.tl-dot.entregue{background:#9ca3af;}
+.tl-card{background:var(--branco);border-radius:10px;padding:.7rem .9rem;box-shadow:var(--sh);font-size:.82rem;}
+.tl-time{font-size:.7rem;color:var(--cinza);margin-bottom:.15rem;}
+.tl-nome{font-weight:700;}
+.tl-status{font-size:.72rem;margin-top:.15rem;}
+
+/* TOAST */
+.toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%) translateY(80px);background:var(--g1);color:#fff;padding:.65rem 1.3rem;border-radius:50px;font-size:.85rem;font-weight:500;z-index:999;transition:transform .3s ease;white-space:nowrap;pointer-events:none;}
+.toast.show{transform:translateX(-50%) translateY(0);}
+
+/* LAST UPDATE */
+.last-upd{font-size:.72rem;color:var(--cinza);text-align:right;margin-bottom:.8rem;}
+
+@media(max-width:600px){.kanban{grid-template-columns:1fr 1fr;}.kpi-grid{grid-template-columns:repeat(2,1fr);}}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="tela-login">
+  <div class="login-box">
+    <div class="login-logo">Horta <em>em</em> Casa</div>
+    <span class="login-role"> Painel da Dona</span>
+    <div class="login-sub">Relatórios e acompanhamento em tempo real</div>
+    <input class="login-inp" type="password" id="login-senha" placeholder="••••"
+      onkeydown="if(event.key==='Enter')fazerLogin()">
+    <div class="login-err" id="login-err">Senha incorreta. Tente novamente.</div>
+    <button class="btn-login" onclick="fazerLogin()">Entrar</button>
+    <button class="link-voltar" onclick="window.location.href='horta_index.html'">← Voltar ao catálogo</button>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <div class="topbar">
+    <div>
+      <div class="tlogo">Horta <em>em</em> Casa</div>
+      <div class="trole">Painel da Dona</div>
+    </div>
+    <div class="topright">
+      <div class="live-badge"><span class="live-dot"></span>Tempo real</div>
+      <button class="tbtn" onclick="sair()">Sair 🔓</button>
+    </div>
+  </div>
+
+  <div class="admin-tabs">
+    <button class="atab active" onclick="aTab('t-dash',this)">Dashboard</button>
+    <button class="atab" onclick="aTab('t-pedidos',this)">Pedidos</button>
+    <button class="atab" onclick="aTab('t-clientes',this)">Clientes</button>
+    <button class="atab" onclick="aTab('t-relatorio',this)">📈 Relatório</button>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div id="t-dash" class="apanel active">
+    <div class="abody">
+      <div class="dia-header">
+        <div class="dia-data" id="dash-data"></div>
+        <div class="dia-titulo">Bom dia!</div>
+        <div class="dia-sub">Aqui está o resumo do dia em tempo real</div>
+      </div>
+      <div class="last-upd">Atualizado: <span id="last-upd-time">agora</span></div>
+      <div class="kpi-grid" id="kpi-grid"></div>
+      <div class="ptitle" style="margin-bottom:.8rem;margin-top:.3rem;">Status dos Pedidos</div>
+      <div class="kanban" id="kanban"></div>
+      <div class="grafico-card">
+        <h3>🏆 Produtos mais pedidos hoje</h3>
+        <div class="bar-wrap" id="top-prods"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PEDIDOS -->
+  <div id="t-pedidos" class="apanel">
+    <div class="abody">
+      <div class="row-between">
+        <span class="ptitle">Todos os Pedidos</span>
+      </div>
+      <div class="pills" id="pills">
+        <button class="pill active" onclick="filtrarPedidos('todos',this)">Todos</button>
+        <button class="pill" onclick="filtrarPedidos('recebido',this)">Recebido</button>
+        <button class="pill" onclick="filtrarPedidos('preparando',this)">Preparando</button>
+        <button class="pill" onclick="filtrarPedidos('saiu',this)">Saiu p/ entrega</button>
+        <button class="pill" onclick="filtrarPedidos('entregue',this)">Entregue</button>
+      </div>
+      <div id="lista-pedidos"></div>
+    </div>
+  </div>
+
+  <!-- CLIENTES -->
+  <div id="t-clientes" class="apanel">
+    <div class="abody">
+      <div class="row-between">
+        <span class="ptitle">Clientes</span>
+      </div>
+      <div class="kpi-grid" id="cli-kpis"></div>
+      <div class="cli-grid" id="lista-clientes"></div>
+    </div>
+  </div>
+
+  <!-- RELATÓRIO -->
+  <div id="t-relatorio" class="apanel">
+    <div class="abody">
+      <div class="row-between">
+        <span class="ptitle">Relatório do Dia</span>
+      </div>
+      <div class="grafico-card">
+        <h3>💰 Receita confirmada por hora</h3>
+        <canvas id="chart-hora" height="120"></canvas>
+      </div>
+      <div class="grafico-card">
+        <h3>Pedidos por status</h3>
+        <div class="bar-wrap" id="bar-status"></div>
+      </div>
+      <div class="grafico-card">
+        <h3>Linha do tempo de hoje</h3>
+        <div class="timeline" id="timeline"></div>
+      </div>
+      <div class="grafico-card">
+        <h3>Categorias mais vendidas</h3>
+        <div class="bar-wrap" id="bar-cats"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ══ SENHA ══
+const SENHA_DONA = '4321';
+
+// ══ STORAGE KEYS ══
+const KEY_PEDIDOS = 'hc_pedidos';
+const KEY_PRODS = 'hc_prods';
+
+// ══ ESTADO ══
+let pedidos=[], prods=[], logado=false, filtroPed='todos', tabAtiva='t-dash';
+let chartHora=null;
+
+// ══ HELPERS ══
+function cap(s){return s?s.charAt(0).toUpperCase()+s.slice(1).toLowerCase():'';}
+function isKgProd(p){return p.u==='kg'||p.u==='grama';}
+function fmtGrama(g){return g>=1000?(g/1000).toFixed(g%1000===0?0:1).replace('.',',')+' kg':g+'g';}
+function itemStr(i){const kg=isKgProd(i);return kg?`${fmtGrama(i.gramas||100)} de ${cap(i.n)}`:`${i.qty}x ${cap(i.n)}`;}
+function fmtVal(v){return'R$ '+parseFloat(v).toFixed(2).replace('.',',');}
+function hoje(){return new Date().toLocaleDateString('pt-BR');}
+
+// ══ STORAGE ══
+function loadData(){
+  try{
+    const p=localStorage.getItem(KEY_PEDIDOS);
+    pedidos=p?JSON.parse(p):[];
+    const pr=localStorage.getItem(KEY_PRODS);
+    prods=pr?JSON.parse(pr):[];
+  }catch(e){pedidos=[];prods=[];}
+}
+
+// ══ LOGIN ══
+function fazerLogin(){
+  const s=document.getElementById('login-senha').value;
+  const err=document.getElementById('login-err');
+  if(s===SENHA_DONA){
+    err.style.display='none';
+    document.getElementById('login-senha').value='';
+    document.getElementById('tela-login').style.display='none';
+    document.getElementById('app').style.display='block';
+    logado=true;
+    loadData(); renderAll();
+    // poll a cada 4 segundos
+    setInterval(()=>{if(!logado)return;loadData();renderAll();atuLastUpd();},4000);
+  }else{
+    err.style.display='block';
+    document.getElementById('login-senha').value='';
+    document.getElementById('login-senha').focus();
+  }
+}
+function sair(){
+  logado=false;
+  document.getElementById('app').style.display='none';
+  document.getElementById('tela-login').style.display='flex';
+}
+
+// storage events (outras abas)
+window.addEventListener('storage',e=>{
+  if(!logado)return;
+  if(e.key===KEY_PEDIDOS||e.key===KEY_PRODS){
+    loadData(); renderAll(); atuLastUpd();
+    toast('🔄 Dados atualizados em tempo real');
+  }
+});
+
+// ══ TABS ══
+function aTab(id,btn){
+  tabAtiva=id;
+  document.querySelectorAll('.apanel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.atab').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+  renderAll();
+}
+function renderAll(){
+  if(tabAtiva==='t-dash')renderDash();
+  if(tabAtiva==='t-pedidos')renderPedidos();
+  if(tabAtiva==='t-clientes')renderClientes();
+  if(tabAtiva==='t-relatorio')renderRelatorio();
+}
+
+// ══ DASHBOARD ══
+function renderDash(){
+  // data
+  const d=new Date();
+  document.getElementById('dash-data').textContent=d.toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+
+  const pedHoje=pedidos.filter(p=>p.data===hoje());
+  const entregues=pedHoje.filter(p=>p.status==='entregue');
+  const emAndamento=pedHoje.filter(p=>p.status!=='entregue');
+  const receita=pedHoje.filter(p=>p.valorConfirmado).reduce((a,p)=>a+parseFloat(p.valorConfirmado.replace(',','.')),0);
+  const receitaEnt=entregues.filter(p=>p.valorConfirmado).reduce((a,p)=>a+parseFloat(p.valorConfirmado.replace(',','.')),0);
+
+  // KPIs
+  document.getElementById('kpi-grid').innerHTML=`
+    <div class="kpi terra"><div class="kv">${fmtVal(receita)}</div><div class="kl">Receita confirmada</div></div>
+    <div class="kpi"><div class="kv">${pedHoje.length}</div><div class="kl">Pedidos hoje</div></div>
+    <div class="kpi verde-esc"><div class="kv">${entregues.length}</div><div class="kl">Entregues</div></div>
+    <div class="kpi azul"><div class="kv">${emAndamento.length}</div><div class="kl">Em andamento</div></div>
+    <div class="kpi"><div class="kv">${[...new Set(pedHoje.map(p=>p.nome))].length}</div><div class="kl">Clientes únicos</div></div>
+    <div class="kpi terra"><div class="kv">${fmtVal(receitaEnt)}</div><div class="kl">Receita entregue</div></div>`;
+
+  // Kanban
+  const cols=['recebido','preparando','saiu','entregue'];
+  const colLabel={recebido:'Recebido',preparando:'Preparando',saiu:'Saiu',entregue:'Entregue'};
+  document.getElementById('kanban').innerHTML=cols.map(s=>{
+    const lista=pedHoje.filter(p=>p.status===s);
+    return`<div class="kancol">
+      <div class="kancol-head ${s}">${colLabel[s]}<span class="kancol-count">${lista.length}</span></div>
+      <div class="kancol-body">${lista.length?lista.slice(0,5).map(p=>`
+        <div class="mini-pcard">
+          <div class="mp-nome">${p.nome}</div>
+          <div class="mp-itens">${p.itens.slice(0,2).map(i=>itemStr(i)).join(', ')}${p.itens.length>2?' +mais':''}</div>
+          ${p.valorConfirmado?`<div class="mp-val">R$ ${p.valorConfirmado}</div>`:''}
+          <div class="mp-hora">${p.hora}</div>
+        </div>`).join('')+(lista.length>5?`<div style="font-size:.72rem;color:var(--cinza);text-align:center;padding:.3rem">+${lista.length-5} mais</div>`:''): `<div style="font-size:.76rem;color:var(--cinza);text-align:center;padding:.5rem">—</div>`}</div>
+    </div>`;
+  }).join('');
+
+  // Top produtos
+  const contagem={};
+  pedHoje.forEach(p=>p.itens.forEach(i=>{if(!contagem[i.n])contagem[i.n]=0;contagem[i.n]+=isKgProd(i)?(i.gramas||100)/100:i.qty;}));
+  const sorted=Object.entries(contagem).sort((a,b)=>b[1]-a[1]).slice(0,8);
+  const max=sorted[0]?sorted[0][1]:1;
+  document.getElementById('top-prods').innerHTML=sorted.length?sorted.map(([n,v])=>`
+    <div class="bar-row">
+      <div class="bar-label">${cap(n)}</div>
+      <div class="bar-track"><div class="bar-fill" style="width:${(v/max*100).toFixed(1)}%"></div></div>
+      <div class="bar-val">${v%1===0?v:v.toFixed(1)}</div>
+    </div>`).join(''):`<div class="empty"><div class="ic">📭</div>Nenhum pedido ainda.</div>`;
+}
+
+// ══ PEDIDOS ══
+function filtrarPedidos(f,btn){
+  filtroPed=f;
+  document.querySelectorAll('#pills .pill').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active'); renderPedidos();
+}
+function renderPedidos(){
+  const f=filtroPed==='todos'?pedidos:pedidos.filter(p=>p.status===filtroPed);
+  const lbl={recebido:'Recebido',preparando:'Preparando',saiu:'Saiu para entrega',entregue:'Entregue'};
+  const el=document.getElementById('lista-pedidos');
+  if(!f.length){el.innerHTML=`<div class="empty"><div class="ic">📋</div>Nenhum pedido.</div>`;return;}
+  el.innerHTML=f.map(p=>`<div class="pcard s-${p.status}">
+    <div class="ptop">
+      <div>
+        <div class="pnome">${p.nome}</div>
+        ${p.endereco?`<div class="pmeta">${p.endereco}</div>`:''}
+        ${p.tel?`<div class="pmeta">${p.tel}</div>`:''}
+        <div class="pmeta">${p.hora} — ${p.data}</div>
+      </div>
+      <span class="sbadge sb-${p.status}">${lbl[p.status]}</span>
+    </div>
+    <div class="pitens">${p.itens.map(i=>itemStr(i)).join(' · ')}</div>
+    ${p.obs?`<div style="font-size:.8rem;background:var(--terra-l);padding:.4rem .7rem;border-radius:8px;margin-bottom:.55rem">📝 ${p.obs}</div>`:''}
+    ${p.valorConfirmado?`<div class="pval">R$ ${p.valorConfirmado}</div>`:'<div style="font-size:.78rem;color:var(--cinza)">⚖️ Aguardando pesagem</div>'}
+  </div>`).join('');
+}
+
+// ══ CLIENTES ══
+function renderClientes(){
+  const m={};
+  pedidos.forEach(p=>{
+    if(!m[p.nome])m[p.nome]={nome:p.nome,peds:[],g:0,ultima:''};
+    m[p.nome].peds.push(p);
+    if(p.valorConfirmado)m[p.nome].g+=parseFloat(p.valorConfirmado.replace(',','.'));
+    m[p.nome].ultima=p.data;
+  });
+  const total=pedidos.length;
+  const receita=pedidos.filter(p=>p.valorConfirmado).reduce((a,p)=>a+parseFloat(p.valorConfirmado.replace(',','.')),0);
+  const unicos=Object.keys(m).length;
+  const mediaGasto=unicos>0?(receita/unicos):0;
+  document.getElementById('cli-kpis').innerHTML=`
+    <div class="kpi"><div class="kv">${unicos}</div><div class="kl">Clientes únicos</div></div>
+    <div class="kpi terra"><div class="kv">${fmtVal(receita)}</div><div class="kl">Receita total</div></div>
+    <div class="kpi azul"><div class="kv">${total}</div><div class="kl">Pedidos totais</div></div>
+    <div class="kpi verde-esc"><div class="kv">${fmtVal(mediaGasto)}</div><div class="kl">Ticket médio</div></div>`;
+  const el=document.getElementById('lista-clientes');
+  if(!Object.keys(m).length){el.innerHTML=`<div class="empty"><div class="ic">👤</div>Nenhum cliente ainda.</div>`;return;}
+  const sorted=Object.values(m).sort((a,b)=>b.g-a.g);
+  el.innerHTML=sorted.map((c,idx)=>`<div class="clicard">
+    <div class="clinome">${''} ${c.nome}</div>
+    <div class="clidata">Último pedido: ${c.ultima}</div>
+    <div class="clistats">
+      <div class="clistat"><div class="v">${c.peds.length}</div><div class="l">Pedidos</div></div>
+      <div class="clistat"><div class="v">${fmtVal(c.g)}</div><div class="l">Total gasto</div></div>
+    </div>
+  </div>`).join('');
+}
+
+// ══ RELATÓRIO ══
+function renderRelatorio(){
+  const pedHoje=pedidos.filter(p=>p.data===hoje());
+
+  // Receita por hora (simples, barras)
+  const horaMap={};
+  pedHoje.filter(p=>p.valorConfirmado).forEach(p=>{
+    const h=p.hora?p.hora.split(':')[0]:'?';
+    if(!horaMap[h])horaMap[h]=0;
+    horaMap[h]+=parseFloat(p.valorConfirmado.replace(',','.'));
+  });
+  const horas=Object.entries(horaMap).sort((a,b)=>parseInt(a[0])-parseInt(b[0]));
+  const maxH=horas.reduce((a,[,v])=>Math.max(a,v),1);
+  // use canvas para mini chart
+  const canvas=document.getElementById('chart-hora');
+  const ctx=canvas.getContext('2d');
+  canvas.width=canvas.offsetWidth||600; canvas.height=120;
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  if(horas.length){
+    const bw=Math.min(60,canvas.width/horas.length-8);
+    const gap=(canvas.width-horas.length*bw)/(horas.length+1);
+    horas.forEach(([h,v],i)=>{
+      const x=gap+(bw+gap)*i;
+      const barH=(v/maxH)*(canvas.height-30);
+      const grad=ctx.createLinearGradient(0,canvas.height-barH,0,canvas.height);
+      grad.addColorStop(0,'#40916c');grad.addColorStop(1,'#52b788');
+      ctx.fillStyle=grad;
+      ctx.beginPath();
+      ctx.roundRect?ctx.roundRect(x,canvas.height-barH-20,bw,barH,4):ctx.rect(x,canvas.height-barH-20,bw,barH);
+      ctx.fill();
+      ctx.fillStyle='#6b7280';ctx.font='10px DM Sans';ctx.textAlign='center';
+      ctx.fillText(h+'h',x+bw/2,canvas.height-5);
+      ctx.fillStyle='#1b4332';ctx.font='bold 9px DM Sans';
+      ctx.fillText('R$'+v.toFixed(0),x+bw/2,canvas.height-barH-24);
+    });
+  }else{
+    ctx.fillStyle='#9ca3af';ctx.font='14px DM Sans';ctx.textAlign='center';
+    ctx.fillText('Nenhuma receita confirmada ainda.',canvas.width/2,60);
+  }
+
+  // Por status
+  const statCounts={recebido:0,preparando:0,saiu:0,entregue:0};
+  pedHoje.forEach(p=>{if(statCounts[p.status]!==undefined)statCounts[p.status]++;});
+  const maxS=Math.max(1,...Object.values(statCounts));
+  const statLabel={recebido:'Recebido',preparando:'Preparando',saiu:'🟡 Saiu p/ entrega',entregue:'Entregue'};
+  document.getElementById('bar-status').innerHTML=Object.entries(statCounts).map(([s,v])=>`
+    <div class="bar-row">
+      <div class="bar-label">${statLabel[s]}</div>
+      <div class="bar-track"><div class="bar-fill" style="width:${(v/maxS*100).toFixed(1)}%"></div></div>
+      <div class="bar-val">${v}</div>
+    </div>`).join('');
+
+  // Timeline
+  const tl=document.getElementById('timeline');
+  if(!pedHoje.length){tl.innerHTML=`<div class="empty"><div class="ic">📋</div>Nenhum pedido hoje.</div>`;
+  }else{
+    const sorted=[...pedHoje].sort((a,b)=>{const ah=a.hora||'',bh=b.hora||'';return ah<bh?1:-1;});
+    tl.innerHTML=sorted.map(p=>`<div class="tl-item">
+      <div class="tl-dot ${p.status}"></div>
+      <div class="tl-card">
+        <div class="tl-time">${p.hora}</div>
+        <div class="tl-nome">${p.nome}</div>
+        <div style="font-size:.75rem;color:var(--cinza);margin-top:.1rem">${p.itens.slice(0,2).map(i=>itemStr(i)).join(', ')}</div>
+        ${p.valorConfirmado?`<div style="font-size:.75rem;color:var(--g2);font-weight:600;margin-top:.2rem">R$ ${p.valorConfirmado}</div>`:''}
+      </div>
+    </div>`).join('');
+  }
+
+  // Categorias
+  const catMap={};
+  pedHoje.forEach(p=>p.itens.forEach(i=>{if(!catMap[i.c])catMap[i.c]=0;catMap[i.c]+=isKgProd(i)?(i.gramas||100)/100:i.qty;}));
+  const catSorted=Object.entries(catMap).sort((a,b)=>b[1]-a[1]);
+  const maxC=catSorted[0]?catSorted[0][1]:1;
+  document.getElementById('bar-cats').innerHTML=catSorted.length?catSorted.map(([c,v])=>`
+    <div class="bar-row">
+      <div class="bar-label">${c}</div>
+      <div class="bar-track"><div class="bar-fill" style="width:${(v/maxC*100).toFixed(1)}%"></div></div>
+      <div class="bar-val">${v%1===0?v:v.toFixed(1)}</div>
+    </div>`).join(''):`<div style="color:var(--cinza);font-size:.82rem;text-align:center;padding:1rem">Nenhum dado ainda.</div>`;
+}
+
+// ══ LAST UPDATE ══
+function atuLastUpd(){
+  const t=new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  const el=document.getElementById('last-upd-time');
+  if(el)el.textContent=t;
+}
+
+// ══ TOAST ══
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2500);
+}
+</script>
+</body>
+</html>
