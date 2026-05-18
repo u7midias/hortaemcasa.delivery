@@ -155,6 +155,7 @@ body{font-family:'Inter',sans-serif;background:var(--creme);color:var(--escuro);
 
 @media(max-width:600px){.kanban{grid-template-columns:1fr 1fr;}.kpi-grid{grid-template-columns:repeat(2,1fr);}}
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
@@ -270,286 +271,32 @@ body{font-family:'Inter',sans-serif;background:var(--creme);color:var(--escuro);
 <script>
 // ══ SENHA ══
 const SENHA_DONA = '4321';
-
-// ══ STORAGE KEYS ══
-const KEY_PEDIDOS = 'hc_pedidos';
-const KEY_PRODS = 'hc_prods';
-
-// ══ ESTADO ══
+const SURL='https://bumhjyhaqewcfwojlgwc.supabase.co', SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ1bWhqeWhhcWV3Y2Z3b2psZ3djIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc5MjkxNTksImV4cCI6MjA5MzUwNTE1OX0.2l7naJq1_sug0zkENLH3A4yyaiXKjGyEbFM4BbBPzFs';
+const sb = supabase.createClient(SURL, SKEY);
 let pedidos=[], prods=[], logado=false, filtroPed='todos', tabAtiva='t-dash';
-let chartHora=null;
-
-// ══ HELPERS ══
 function cap(s){return s?s.charAt(0).toUpperCase()+s.slice(1).toLowerCase():'';}
-function isKgProd(p){return p.u==='kg'||p.u==='grama';}
+function isKgProd(p){return (p.u||p.unidade)==='kg'||(p.u||p.unidade)==='grama';}
 function fmtGrama(g){return g>=1000?(g/1000).toFixed(g%1000===0?0:1).replace('.',',')+' kg':g+'g';}
-function itemStr(i){const kg=isKgProd(i);return kg?`${fmtGrama(i.gramas||100)} de ${cap(i.n)}`:`${i.qty}x ${cap(i.n)}`;}
-function fmtVal(v){return'R$ '+parseFloat(v).toFixed(2).replace('.',',');}
+function itemStr(i){const kg=isKgProd(i);return kg?`${fmtGrama(i.gramas||100)} de ${cap(i.n||i.nome)}`:`${i.qty||1}x ${cap(i.n||i.nome)}`;}
+function fmtVal(v){return'R$ '+Number(v||0).toFixed(2).replace('.',',');}
 function hoje(){return new Date().toLocaleDateString('pt-BR');}
+function mapItem(i){return {id:i.id||i.produto_id,n:i.n||i.nome,u:i.u||i.unidade,c:i.c||i.categoria,qty:i.qty||i.quantidade||1,gramas:i.gramas||null};}
+function mapPedidoDb(p){const d=new Date(p.created_at||Date.now());return {id:p.id,nome:p.cliente_nome||p.nome,endereco:p.cliente_endereco||p.endereco||'',tel:p.cliente_tel||p.tel||'',obs:p.obs||p.observacao||'',itens:(p.itens||[]).map(mapItem),status:p.status||'recebido',hora:d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'}),data:d.toLocaleDateString('pt-BR'),valorConfirmado:p.valor_confirmado!=null?Number(p.valor_confirmado).toFixed(2).replace('.',','):null,origem:p.origem||'catalogo'};}
+async function loadData(){const [ped,pr]=await Promise.all([sb.from('pedidos').select('*').order('created_at',{ascending:false}),sb.from('produtos').select('*')]);if(ped.error){console.error(ped.error);toast('Erro ao carregar pedidos');}if(pr.error)console.error(pr.error);pedidos=(ped.data||[]).map(mapPedidoDb);prods=pr.data||[];}
+async function fazerLogin(){const s=document.getElementById('login-senha').value;const err=document.getElementById('login-err');if(s===SENHA_DONA){err.style.display='none';document.getElementById('login-senha').value='';document.getElementById('tela-login').style.display='none';document.getElementById('app').style.display='block';logado=true;await loadData();renderAll();atuLastUpd();assinarTempoReal();}else{err.style.display='block';document.getElementById('login-senha').value='';document.getElementById('login-senha').focus();}}
+function sair(){logado=false;document.getElementById('app').style.display='none';document.getElementById('tela-login').style.display='flex';}
+let canalRT=null;function assinarTempoReal(){if(canalRT)return;canalRT=sb.channel('dona-rt').on('postgres_changes',{event:'*',schema:'public',table:'pedidos'},async()=>{await loadData();renderAll();atuLastUpd();toast('🔄 Pedidos atualizados');}).on('postgres_changes',{event:'*',schema:'public',table:'produtos'},async()=>{await loadData();renderAll();atuLastUpd();}).subscribe();}
+function aTab(id,btn){tabAtiva=id;document.querySelectorAll('.apanel').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.atab').forEach(b=>b.classList.remove('active'));document.getElementById(id).classList.add('active');btn.classList.add('active');renderAll();}
+function renderAll(){if(tabAtiva==='t-dash')renderDash();if(tabAtiva==='t-pedidos')renderPedidos();if(tabAtiva==='t-clientes')renderClientes();if(tabAtiva==='t-relatorio')renderRelatorio();}
+function valorNum(p){return p.valorConfirmado?parseFloat(String(p.valorConfirmado).replace(',','.')):0;}
+function renderDash(){const d=new Date();document.getElementById('dash-data').textContent=d.toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});const pedHoje=pedidos.filter(p=>p.data===hoje());const entregues=pedHoje.filter(p=>p.status==='entregue');const emAndamento=pedHoje.filter(p=>p.status!=='entregue');const receita=pedHoje.reduce((a,p)=>a+valorNum(p),0);const receitaEnt=entregues.reduce((a,p)=>a+valorNum(p),0);document.getElementById('kpi-grid').innerHTML=`<div class="kpi terra"><div class="kv">${fmtVal(receita)}</div><div class="kl">Receita confirmada</div></div><div class="kpi"><div class="kv">${pedHoje.length}</div><div class="kl">Pedidos hoje</div></div><div class="kpi verde-esc"><div class="kv">${entregues.length}</div><div class="kl">Entregues</div></div><div class="kpi azul"><div class="kv">${emAndamento.length}</div><div class="kl">Em andamento</div></div><div class="kpi"><div class="kv">${[...new Set(pedHoje.map(p=>p.nome))].length}</div><div class="kl">Clientes únicos</div></div><div class="kpi terra"><div class="kv">${fmtVal(receitaEnt)}</div><div class="kl">Receita entregue</div></div>`;const cols=['recebido','preparando','saiu','entregue'];const colLabel={recebido:'Recebido',preparando:'Preparando',saiu:'Saiu',entregue:'Entregue'};document.getElementById('kanban').innerHTML=cols.map(s=>{const lista=pedHoje.filter(p=>p.status===s);return`<div class="kancol"><div class="kancol-head ${s}">${colLabel[s]}<span class="kancol-count">${lista.length}</span></div><div class="kancol-body">${lista.length?lista.slice(0,5).map(p=>`<div class="mini-pcard"><div class="mp-nome">${p.nome}</div><div class="mp-itens">${p.itens.slice(0,2).map(i=>itemStr(i)).join(', ')}${p.itens.length>2?' +mais':''}</div>${p.valorConfirmado?`<div class="mp-val">R$ ${p.valorConfirmado}</div>`:''}<div class="mp-hora">${p.hora}</div></div>`).join('')+(lista.length>5?`<div style="font-size:.72rem;color:var(--cinza);text-align:center;padding:.3rem">+${lista.length-5} mais</div>`:''):`<div style="font-size:.76rem;color:var(--cinza);text-align:center;padding:.5rem">—</div>`}</div></div>`;}).join('');const contagem={};pedHoje.forEach(p=>p.itens.forEach(i=>{const n=i.n||i.nome;if(!contagem[n])contagem[n]=0;contagem[n]+=isKgProd(i)?(i.gramas||100)/100:(i.qty||1);}));const sorted=Object.entries(contagem).sort((a,b)=>b[1]-a[1]).slice(0,8);const max=sorted[0]?sorted[0][1]:1;document.getElementById('top-prods').innerHTML=sorted.length?sorted.map(([n,v])=>`<div class="bar-row"><div class="bar-label">${cap(n)}</div><div class="bar-track"><div class="bar-fill" style="width:${(v/max*100).toFixed(1)}%"></div></div><div class="bar-val">${v%1===0?v:v.toFixed(1)}</div></div>`).join(''):`<div class="empty"><div class="ic">📭</div>Nenhum pedido ainda.</div>`;}
+function filtrarPedidos(f,btn){filtroPed=f;document.querySelectorAll('#pills .pill').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderPedidos();}
+function renderPedidos(){const f=filtroPed==='todos'?pedidos:pedidos.filter(p=>p.status===filtroPed);const lbl={recebido:'Recebido',preparando:'Preparando',saiu:'Saiu para entrega',entregue:'Entregue'};const el=document.getElementById('lista-pedidos');if(!f.length){el.innerHTML=`<div class="empty"><div class="ic">📋</div>Nenhum pedido.</div>`;return;}el.innerHTML=f.map(p=>`<div class="pcard s-${p.status}"><div class="ptop"><div><div class="pnome">${p.nome}</div>${p.endereco?`<div class="pmeta">${p.endereco}</div>`:''}${p.tel?`<div class="pmeta">${p.tel}</div>`:''}<div class="pmeta">${p.hora} — ${p.data}</div></div><span class="sbadge sb-${p.status}">${lbl[p.status]}</span></div><div class="pitens">${p.itens.map(i=>itemStr(i)).join(' · ')}</div>${p.obs?`<div style="font-size:.8rem;background:var(--terra-l);padding:.4rem .7rem;border-radius:8px;margin-bottom:.55rem">📝 ${p.obs}</div>`:''}${p.valorConfirmado?`<div class="pval">R$ ${p.valorConfirmado}</div>`:'<div style="font-size:.78rem;color:var(--cinza)">⚖️ Aguardando pesagem</div>'}</div>`).join('');}
+function renderClientes(){const m={};pedidos.forEach(p=>{if(!m[p.nome])m[p.nome]={nome:p.nome,peds:[],g:0,ultima:''};m[p.nome].peds.push(p);m[p.nome].g+=valorNum(p);m[p.nome].ultima=p.data;});const total=pedidos.length;const receita=pedidos.reduce((a,p)=>a+valorNum(p),0);const unicos=Object.keys(m).length;const mediaGasto=unicos>0?(receita/unicos):0;document.getElementById('cli-kpis').innerHTML=`<div class="kpi"><div class="kv">${unicos}</div><div class="kl">Clientes únicos</div></div><div class="kpi terra"><div class="kv">${fmtVal(receita)}</div><div class="kl">Receita total</div></div><div class="kpi azul"><div class="kv">${total}</div><div class="kl">Pedidos totais</div></div><div class="kpi verde-esc"><div class="kv">${fmtVal(mediaGasto)}</div><div class="kl">Ticket médio</div></div>`;const el=document.getElementById('lista-clientes');if(!Object.keys(m).length){el.innerHTML=`<div class="empty"><div class="ic">👤</div>Nenhum cliente ainda.</div>`;return;}const sorted=Object.values(m).sort((a,b)=>b.g-a.g);el.innerHTML=sorted.map(c=>`<div class="clicard"><div class="clinome">${c.nome}</div><div class="clidata">Último pedido: ${c.ultima}</div><div class="clistats"><div class="clistat"><div class="v">${c.peds.length}</div><div class="l">Pedidos</div></div><div class="clistat"><div class="v">${fmtVal(c.g)}</div><div class="l">Total gasto</div></div></div></div>`).join('');}
+function renderRelatorio(){const pedHoje=pedidos.filter(p=>p.data===hoje());const horaMap={};pedHoje.filter(p=>p.valorConfirmado).forEach(p=>{const h=p.hora?p.hora.split(':')[0]:'?';if(!horaMap[h])horaMap[h]=0;horaMap[h]+=valorNum(p);});const horas=Object.entries(horaMap).sort((a,b)=>parseInt(a[0])-parseInt(b[0]));const maxH=horas.reduce((a,[,v])=>Math.max(a,v),1);const canvas=document.getElementById('chart-hora');const ctx=canvas.getContext('2d');canvas.width=canvas.offsetWidth||600;canvas.height=120;ctx.clearRect(0,0,canvas.width,canvas.height);if(horas.length){const bw=Math.min(60,canvas.width/horas.length-8);const gap=(canvas.width-horas.length*bw)/(horas.length+1);horas.forEach(([h,v],i)=>{const x=gap+(bw+gap)*i;const barH=(v/maxH)*(canvas.height-30);const grad=ctx.createLinearGradient(0,canvas.height-barH,0,canvas.height);grad.addColorStop(0,'#40916c');grad.addColorStop(1,'#52b788');ctx.fillStyle=grad;ctx.beginPath();ctx.roundRect?ctx.roundRect(x,canvas.height-barH-20,bw,barH,4):ctx.rect(x,canvas.height-barH-20,bw,barH);ctx.fill();ctx.fillStyle='#6b7280';ctx.font='10px DM Sans';ctx.textAlign='center';ctx.fillText(h+'h',x+bw/2,canvas.height-5);ctx.fillStyle='#1b4332';ctx.font='bold 9px DM Sans';ctx.fillText('R$'+v.toFixed(0),x+bw/2,canvas.height-barH-24);});}else{ctx.fillStyle='#9ca3af';ctx.font='14px DM Sans';ctx.textAlign='center';ctx.fillText('Nenhuma receita confirmada ainda.',canvas.width/2,60);}const statCounts={recebido:0,preparando:0,saiu:0,entregue:0};pedHoje.forEach(p=>{if(statCounts[p.status]!==undefined)statCounts[p.status]++;});const maxS=Math.max(1,...Object.values(statCounts));const statLabel={recebido:'Recebido',preparando:'Preparando',saiu:'🟡 Saiu p/ entrega',entregue:'Entregue'};document.getElementById('bar-status').innerHTML=Object.entries(statCounts).map(([s,v])=>`<div class="bar-row"><div class="bar-label">${statLabel[s]}</div><div class="bar-track"><div class="bar-fill" style="width:${(v/maxS*100).toFixed(1)}%"></div></div><div class="bar-val">${v}</div></div>`).join('');const tl=document.getElementById('timeline');if(!pedHoje.length){tl.innerHTML=`<div class="empty"><div class="ic">📋</div>Nenhum pedido hoje.</div>`;}else{const sorted=[...pedHoje].sort((a,b)=>{const ah=a.hora||'',bh=b.hora||'';return ah<bh?1:-1;});tl.innerHTML=sorted.map(p=>`<div class="tl-item"><div class="tl-dot ${p.status}"></div><div class="tl-card"><div class="tl-time">${p.hora}</div><div class="tl-nome">${p.nome}</div><div style="font-size:.75rem;color:var(--cinza);margin-top:.1rem">${p.itens.slice(0,2).map(i=>itemStr(i)).join(', ')}</div>${p.valorConfirmado?`<div style="font-size:.75rem;color:var(--g2);font-weight:600;margin-top:.2rem">R$ ${p.valorConfirmado}</div>`:''}</div></div>`).join('');}const catMap={};pedHoje.forEach(p=>p.itens.forEach(i=>{const c=i.c||i.categoria||'Sem categoria';if(!catMap[c])catMap[c]=0;catMap[c]+=isKgProd(i)?(i.gramas||100)/100:(i.qty||1);}));const catSorted=Object.entries(catMap).sort((a,b)=>b[1]-a[1]);const maxC=catSorted[0]?catSorted[0][1]:1;document.getElementById('bar-cats').innerHTML=catSorted.length?catSorted.map(([c,v])=>`<div class="bar-row"><div class="bar-label">${c}</div><div class="bar-track"><div class="bar-fill" style="width:${(v/maxC*100).toFixed(1)}%"></div></div><div class="bar-val">${v%1===0?v:v.toFixed(1)}</div></div>`).join(''):`<div style="color:var(--cinza);font-size:.82rem;text-align:center;padding:1rem">Nenhum dado ainda.</div>`;}
+function atuLastUpd(){const t=new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});const el=document.getElementById('last-upd-time');if(el)el.textContent=t;}
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
 
-// ══ STORAGE ══
-function loadData(){
-  try{
-    const p=localStorage.getItem(KEY_PEDIDOS);
-    pedidos=p?JSON.parse(p):[];
-    const pr=localStorage.getItem(KEY_PRODS);
-    prods=pr?JSON.parse(pr):[];
-  }catch(e){pedidos=[];prods=[];}
-}
-
-// ══ LOGIN ══
-function fazerLogin(){
-  const s=document.getElementById('login-senha').value;
-  const err=document.getElementById('login-err');
-  if(s===SENHA_DONA){
-    err.style.display='none';
-    document.getElementById('login-senha').value='';
-    document.getElementById('tela-login').style.display='none';
-    document.getElementById('app').style.display='block';
-    logado=true;
-    loadData(); renderAll();
-    // poll a cada 4 segundos
-    setInterval(()=>{if(!logado)return;loadData();renderAll();atuLastUpd();},4000);
-  }else{
-    err.style.display='block';
-    document.getElementById('login-senha').value='';
-    document.getElementById('login-senha').focus();
-  }
-}
-function sair(){
-  logado=false;
-  document.getElementById('app').style.display='none';
-  document.getElementById('tela-login').style.display='flex';
-}
-
-// storage events (outras abas)
-window.addEventListener('storage',e=>{
-  if(!logado)return;
-  if(e.key===KEY_PEDIDOS||e.key===KEY_PRODS){
-    loadData(); renderAll(); atuLastUpd();
-    toast('🔄 Dados atualizados em tempo real');
-  }
-});
-
-// ══ TABS ══
-function aTab(id,btn){
-  tabAtiva=id;
-  document.querySelectorAll('.apanel').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.atab').forEach(b=>b.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  btn.classList.add('active');
-  renderAll();
-}
-function renderAll(){
-  if(tabAtiva==='t-dash')renderDash();
-  if(tabAtiva==='t-pedidos')renderPedidos();
-  if(tabAtiva==='t-clientes')renderClientes();
-  if(tabAtiva==='t-relatorio')renderRelatorio();
-}
-
-// ══ DASHBOARD ══
-function renderDash(){
-  // data
-  const d=new Date();
-  document.getElementById('dash-data').textContent=d.toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
-
-  const pedHoje=pedidos.filter(p=>p.data===hoje());
-  const entregues=pedHoje.filter(p=>p.status==='entregue');
-  const emAndamento=pedHoje.filter(p=>p.status!=='entregue');
-  const receita=pedHoje.filter(p=>p.valorConfirmado).reduce((a,p)=>a+parseFloat(p.valorConfirmado.replace(',','.')),0);
-  const receitaEnt=entregues.filter(p=>p.valorConfirmado).reduce((a,p)=>a+parseFloat(p.valorConfirmado.replace(',','.')),0);
-
-  // KPIs
-  document.getElementById('kpi-grid').innerHTML=`
-    <div class="kpi terra"><div class="kv">${fmtVal(receita)}</div><div class="kl">Receita confirmada</div></div>
-    <div class="kpi"><div class="kv">${pedHoje.length}</div><div class="kl">Pedidos hoje</div></div>
-    <div class="kpi verde-esc"><div class="kv">${entregues.length}</div><div class="kl">Entregues</div></div>
-    <div class="kpi azul"><div class="kv">${emAndamento.length}</div><div class="kl">Em andamento</div></div>
-    <div class="kpi"><div class="kv">${[...new Set(pedHoje.map(p=>p.nome))].length}</div><div class="kl">Clientes únicos</div></div>
-    <div class="kpi terra"><div class="kv">${fmtVal(receitaEnt)}</div><div class="kl">Receita entregue</div></div>`;
-
-  // Kanban
-  const cols=['recebido','preparando','saiu','entregue'];
-  const colLabel={recebido:'Recebido',preparando:'Preparando',saiu:'Saiu',entregue:'Entregue'};
-  document.getElementById('kanban').innerHTML=cols.map(s=>{
-    const lista=pedHoje.filter(p=>p.status===s);
-    return`<div class="kancol">
-      <div class="kancol-head ${s}">${colLabel[s]}<span class="kancol-count">${lista.length}</span></div>
-      <div class="kancol-body">${lista.length?lista.slice(0,5).map(p=>`
-        <div class="mini-pcard">
-          <div class="mp-nome">${p.nome}</div>
-          <div class="mp-itens">${p.itens.slice(0,2).map(i=>itemStr(i)).join(', ')}${p.itens.length>2?' +mais':''}</div>
-          ${p.valorConfirmado?`<div class="mp-val">R$ ${p.valorConfirmado}</div>`:''}
-          <div class="mp-hora">${p.hora}</div>
-        </div>`).join('')+(lista.length>5?`<div style="font-size:.72rem;color:var(--cinza);text-align:center;padding:.3rem">+${lista.length-5} mais</div>`:''): `<div style="font-size:.76rem;color:var(--cinza);text-align:center;padding:.5rem">—</div>`}</div>
-    </div>`;
-  }).join('');
-
-  // Top produtos
-  const contagem={};
-  pedHoje.forEach(p=>p.itens.forEach(i=>{if(!contagem[i.n])contagem[i.n]=0;contagem[i.n]+=isKgProd(i)?(i.gramas||100)/100:i.qty;}));
-  const sorted=Object.entries(contagem).sort((a,b)=>b[1]-a[1]).slice(0,8);
-  const max=sorted[0]?sorted[0][1]:1;
-  document.getElementById('top-prods').innerHTML=sorted.length?sorted.map(([n,v])=>`
-    <div class="bar-row">
-      <div class="bar-label">${cap(n)}</div>
-      <div class="bar-track"><div class="bar-fill" style="width:${(v/max*100).toFixed(1)}%"></div></div>
-      <div class="bar-val">${v%1===0?v:v.toFixed(1)}</div>
-    </div>`).join(''):`<div class="empty"><div class="ic">📭</div>Nenhum pedido ainda.</div>`;
-}
-
-// ══ PEDIDOS ══
-function filtrarPedidos(f,btn){
-  filtroPed=f;
-  document.querySelectorAll('#pills .pill').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active'); renderPedidos();
-}
-function renderPedidos(){
-  const f=filtroPed==='todos'?pedidos:pedidos.filter(p=>p.status===filtroPed);
-  const lbl={recebido:'Recebido',preparando:'Preparando',saiu:'Saiu para entrega',entregue:'Entregue'};
-  const el=document.getElementById('lista-pedidos');
-  if(!f.length){el.innerHTML=`<div class="empty"><div class="ic">📋</div>Nenhum pedido.</div>`;return;}
-  el.innerHTML=f.map(p=>`<div class="pcard s-${p.status}">
-    <div class="ptop">
-      <div>
-        <div class="pnome">${p.nome}</div>
-        ${p.endereco?`<div class="pmeta">${p.endereco}</div>`:''}
-        ${p.tel?`<div class="pmeta">${p.tel}</div>`:''}
-        <div class="pmeta">${p.hora} — ${p.data}</div>
-      </div>
-      <span class="sbadge sb-${p.status}">${lbl[p.status]}</span>
-    </div>
-    <div class="pitens">${p.itens.map(i=>itemStr(i)).join(' · ')}</div>
-    ${p.obs?`<div style="font-size:.8rem;background:var(--terra-l);padding:.4rem .7rem;border-radius:8px;margin-bottom:.55rem">📝 ${p.obs}</div>`:''}
-    ${p.valorConfirmado?`<div class="pval">R$ ${p.valorConfirmado}</div>`:'<div style="font-size:.78rem;color:var(--cinza)">⚖️ Aguardando pesagem</div>'}
-  </div>`).join('');
-}
-
-// ══ CLIENTES ══
-function renderClientes(){
-  const m={};
-  pedidos.forEach(p=>{
-    if(!m[p.nome])m[p.nome]={nome:p.nome,peds:[],g:0,ultima:''};
-    m[p.nome].peds.push(p);
-    if(p.valorConfirmado)m[p.nome].g+=parseFloat(p.valorConfirmado.replace(',','.'));
-    m[p.nome].ultima=p.data;
-  });
-  const total=pedidos.length;
-  const receita=pedidos.filter(p=>p.valorConfirmado).reduce((a,p)=>a+parseFloat(p.valorConfirmado.replace(',','.')),0);
-  const unicos=Object.keys(m).length;
-  const mediaGasto=unicos>0?(receita/unicos):0;
-  document.getElementById('cli-kpis').innerHTML=`
-    <div class="kpi"><div class="kv">${unicos}</div><div class="kl">Clientes únicos</div></div>
-    <div class="kpi terra"><div class="kv">${fmtVal(receita)}</div><div class="kl">Receita total</div></div>
-    <div class="kpi azul"><div class="kv">${total}</div><div class="kl">Pedidos totais</div></div>
-    <div class="kpi verde-esc"><div class="kv">${fmtVal(mediaGasto)}</div><div class="kl">Ticket médio</div></div>`;
-  const el=document.getElementById('lista-clientes');
-  if(!Object.keys(m).length){el.innerHTML=`<div class="empty"><div class="ic">👤</div>Nenhum cliente ainda.</div>`;return;}
-  const sorted=Object.values(m).sort((a,b)=>b.g-a.g);
-  el.innerHTML=sorted.map((c,idx)=>`<div class="clicard">
-    <div class="clinome">${''} ${c.nome}</div>
-    <div class="clidata">Último pedido: ${c.ultima}</div>
-    <div class="clistats">
-      <div class="clistat"><div class="v">${c.peds.length}</div><div class="l">Pedidos</div></div>
-      <div class="clistat"><div class="v">${fmtVal(c.g)}</div><div class="l">Total gasto</div></div>
-    </div>
-  </div>`).join('');
-}
-
-// ══ RELATÓRIO ══
-function renderRelatorio(){
-  const pedHoje=pedidos.filter(p=>p.data===hoje());
-
-  // Receita por hora (simples, barras)
-  const horaMap={};
-  pedHoje.filter(p=>p.valorConfirmado).forEach(p=>{
-    const h=p.hora?p.hora.split(':')[0]:'?';
-    if(!horaMap[h])horaMap[h]=0;
-    horaMap[h]+=parseFloat(p.valorConfirmado.replace(',','.'));
-  });
-  const horas=Object.entries(horaMap).sort((a,b)=>parseInt(a[0])-parseInt(b[0]));
-  const maxH=horas.reduce((a,[,v])=>Math.max(a,v),1);
-  // use canvas para mini chart
-  const canvas=document.getElementById('chart-hora');
-  const ctx=canvas.getContext('2d');
-  canvas.width=canvas.offsetWidth||600; canvas.height=120;
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-  if(horas.length){
-    const bw=Math.min(60,canvas.width/horas.length-8);
-    const gap=(canvas.width-horas.length*bw)/(horas.length+1);
-    horas.forEach(([h,v],i)=>{
-      const x=gap+(bw+gap)*i;
-      const barH=(v/maxH)*(canvas.height-30);
-      const grad=ctx.createLinearGradient(0,canvas.height-barH,0,canvas.height);
-      grad.addColorStop(0,'#40916c');grad.addColorStop(1,'#52b788');
-      ctx.fillStyle=grad;
-      ctx.beginPath();
-      ctx.roundRect?ctx.roundRect(x,canvas.height-barH-20,bw,barH,4):ctx.rect(x,canvas.height-barH-20,bw,barH);
-      ctx.fill();
-      ctx.fillStyle='#6b7280';ctx.font='10px DM Sans';ctx.textAlign='center';
-      ctx.fillText(h+'h',x+bw/2,canvas.height-5);
-      ctx.fillStyle='#1b4332';ctx.font='bold 9px DM Sans';
-      ctx.fillText('R$'+v.toFixed(0),x+bw/2,canvas.height-barH-24);
-    });
-  }else{
-    ctx.fillStyle='#9ca3af';ctx.font='14px DM Sans';ctx.textAlign='center';
-    ctx.fillText('Nenhuma receita confirmada ainda.',canvas.width/2,60);
-  }
-
-  // Por status
-  const statCounts={recebido:0,preparando:0,saiu:0,entregue:0};
-  pedHoje.forEach(p=>{if(statCounts[p.status]!==undefined)statCounts[p.status]++;});
-  const maxS=Math.max(1,...Object.values(statCounts));
-  const statLabel={recebido:'Recebido',preparando:'Preparando',saiu:'🟡 Saiu p/ entrega',entregue:'Entregue'};
-  document.getElementById('bar-status').innerHTML=Object.entries(statCounts).map(([s,v])=>`
-    <div class="bar-row">
-      <div class="bar-label">${statLabel[s]}</div>
-      <div class="bar-track"><div class="bar-fill" style="width:${(v/maxS*100).toFixed(1)}%"></div></div>
-      <div class="bar-val">${v}</div>
-    </div>`).join('');
-
-  // Timeline
-  const tl=document.getElementById('timeline');
-  if(!pedHoje.length){tl.innerHTML=`<div class="empty"><div class="ic">📋</div>Nenhum pedido hoje.</div>`;
-  }else{
-    const sorted=[...pedHoje].sort((a,b)=>{const ah=a.hora||'',bh=b.hora||'';return ah<bh?1:-1;});
-    tl.innerHTML=sorted.map(p=>`<div class="tl-item">
-      <div class="tl-dot ${p.status}"></div>
-      <div class="tl-card">
-        <div class="tl-time">${p.hora}</div>
-        <div class="tl-nome">${p.nome}</div>
-        <div style="font-size:.75rem;color:var(--cinza);margin-top:.1rem">${p.itens.slice(0,2).map(i=>itemStr(i)).join(', ')}</div>
-        ${p.valorConfirmado?`<div style="font-size:.75rem;color:var(--g2);font-weight:600;margin-top:.2rem">R$ ${p.valorConfirmado}</div>`:''}
-      </div>
-    </div>`).join('');
-  }
-
-  // Categorias
-  const catMap={};
-  pedHoje.forEach(p=>p.itens.forEach(i=>{if(!catMap[i.c])catMap[i.c]=0;catMap[i.c]+=isKgProd(i)?(i.gramas||100)/100:i.qty;}));
-  const catSorted=Object.entries(catMap).sort((a,b)=>b[1]-a[1]);
-  const maxC=catSorted[0]?catSorted[0][1]:1;
-  document.getElementById('bar-cats').innerHTML=catSorted.length?catSorted.map(([c,v])=>`
-    <div class="bar-row">
-      <div class="bar-label">${c}</div>
-      <div class="bar-track"><div class="bar-fill" style="width:${(v/maxC*100).toFixed(1)}%"></div></div>
-      <div class="bar-val">${v%1===0?v:v.toFixed(1)}</div>
-    </div>`).join(''):`<div style="color:var(--cinza);font-size:.82rem;text-align:center;padding:1rem">Nenhum dado ainda.</div>`;
-}
-
-// ══ LAST UPDATE ══
-function atuLastUpd(){
-  const t=new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
-  const el=document.getElementById('last-upd-time');
-  if(el)el.textContent=t;
-}
-
-// ══ TOAST ══
-function toast(msg){
-  const t=document.getElementById('toast');
-  t.textContent=msg;t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),2500);
-}
 </script>
 </body>
 </html>
