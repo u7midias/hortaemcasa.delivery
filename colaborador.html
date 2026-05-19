@@ -791,10 +791,11 @@ function telLimpo(p){
 }
 function itensTexto(p){return (p.itens||[]).map(i=>`• ${i.qtd||''} de ${i.nome||i.n||''}`.trim()).join('\n');}
 function montarMensagemPagamento(p){
-  return `🌿 *Horta em Casa*\n\nOlá, ${p.nome}! Seu pedido já foi separado.\n\n*Itens:*\n${itensTexto(p)}\n\n*Valor final:* ${moedaBR(p.total||p.valor||0)}\n\nAgora estamos aguardando o pagamento para seguir com a entrega. 😊`;
+  const valorFinal=moedaBR(p.valor_final||p.total||p.valor||0);
+  return `Olá, ${p.nome}! 🌿\n\nRecebemos seu pedido e já separamos tudo por aqui.\n\nO valor total ficou em *${valorFinal}*.\n\nQual vai ser a forma de pagamento?`;
 }
 function montarMensagemStatus(p){
-  if(p.status==='Aguardando pagamento')return montarMensagemPagamento(p);
+  if(p.status==='Aguardando pagamento' || valorNumerico(p.valor_final||p.total||p.valor||0)>0)return montarMensagemPagamento(p);
   return `🌿 *Horta em Casa*\nOlá ${p.nome}! Seu pedido está *${String(p.status||'Recebido').toLowerCase()}*. 😊`;
 }
 async function salvarValorPedido(id, silencioso=false){
@@ -804,6 +805,7 @@ async function salvarValorPedido(id, silencioso=false){
   const total=valorNumerico(inp.value);
   p.total=total;
   p.valor=total;
+  p.valor_final=total;
   localStorage.setItem('horta_pedidos_admin',JSON.stringify(pedidosLocal));
   if(p.sbId){
     try{await sbPatch('pedidos',`id=eq.${p.sbId}`,{total,valor_final:total});}
@@ -824,9 +826,15 @@ function abrirWhatsAppPedido(p,msg){
 async function enviarMensagemStatus(id){
   const p=pedidosLocal.find(x=>x.id===id);
   if(!p)return;
+  const total=await salvarValorPedido(id,true);
+  if(total){
+    abrirWhatsAppPedido(p,montarMensagemPagamento(p));
+    toast('Mensagem com valor aberta no WhatsApp');
+    return;
+  }
   if(p.status==='Aguardando pagamento'){
-    const total=await salvarValorPedido(id,true);
-    if(!total){toast('Informe o valor final antes de enviar a cobrança','erro');return;}
+    toast('Informe o valor final antes de enviar a cobrança','erro');
+    return;
   }
   abrirWhatsAppPedido(p,montarMensagemStatus(p));
 }
