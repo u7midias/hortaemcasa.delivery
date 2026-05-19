@@ -100,6 +100,15 @@ body{font-family:'DM Sans',sans-serif;background:var(--creme);color:var(--escuro
 .pfilter{border:1.5px solid var(--cinza-l);background:none;border-radius:50px;padding:.32rem .75rem;font-size:.75rem;font-family:'DM Sans',sans-serif;cursor:pointer;color:var(--cinza);transition:all .2s;}
 .pfilter.active{background:var(--g2);color:#fff;border-color:var(--g2);}
 
+
+.valor-final-box{display:flex;gap:.45rem;align-items:center;flex-wrap:wrap;background:var(--gpp);border-radius:10px;padding:.55rem .65rem;margin:.55rem 0;}
+.valor-final-box label{font-size:.72rem;font-weight:800;color:var(--g2);text-transform:uppercase;letter-spacing:.03em;}
+.valor-final-box input{width:120px;padding:.45rem .6rem;border:1.5px solid var(--cinza-l);border-radius:50px;font-family:'DM Sans',sans-serif;font-size:.8rem;outline:none;background:#fff;}
+.valor-final-box input:focus{border-color:var(--g4);}
+.valor-final-box button{border:none;background:var(--g2);color:#fff;border-radius:50px;padding:.45rem .75rem;font-size:.75rem;font-weight:800;font-family:'DM Sans',sans-serif;cursor:pointer;}
+.valor-final-box button:hover{background:var(--g3);}
+.valor-final-help{font-size:.72rem;color:var(--cinza);width:100%;}
+
 /* ── PRODUTOS ──────────────────────────────────────────────────── */
 .prod-admin-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:.85rem;}
 .prod-admin-card{background:var(--branco);border-radius:14px;overflow:hidden;box-shadow:var(--sh);position:relative;}
@@ -315,14 +324,16 @@ body{font-family:'DM Sans',sans-serif;background:var(--creme);color:var(--escuro
     <div class="stats-row" id="stats-row">
       <div class="stat-card"><div class="s-num" id="stat-total">0</div><div class="s-label">Total hoje</div></div>
       <div class="stat-card"><div class="s-num" id="stat-novos">0</div><div class="s-label">Novos</div></div>
-      <div class="stat-card"><div class="s-num" id="stat-preparo">0</div><div class="s-label">Em preparo</div></div>
+      <div class="stat-card"><div class="s-num" id="stat-preparo">0</div><div class="s-label">Em andamento</div></div>
       <div class="stat-card"><div class="s-num" id="stat-entregues">0</div><div class="s-label">Entregues</div></div>
     </div>
 
     <div class="pedidos-filter">
       <button class="pfilter active" onclick="filtrarPedidos('todos',this)">Todos</button>
       <button class="pfilter" onclick="filtrarPedidos('Recebido',this)">📩 Recebidos</button>
-      <button class="pfilter" onclick="filtrarPedidos('Em preparo',this)">🍃 Em preparo</button>
+      <button class="pfilter" onclick="filtrarPedidos('Separando pedido',this)">🍃 Separando</button>
+      <button class="pfilter" onclick="filtrarPedidos('Aguardando pagamento',this)">💳 Aguard. pagamento</button>
+      <button class="pfilter" onclick="filtrarPedidos('Pago',this)">✅ Pago</button>
       <button class="pfilter" onclick="filtrarPedidos('Saiu para entrega',this)">🛵 A caminho</button>
       <button class="pfilter" onclick="filtrarPedidos('Entregue',this)">✅ Entregues</button>
     </div>
@@ -594,7 +605,7 @@ if(!pedidosLocal.length){
      obs:'Sem cebola por favor',status:'Recebido',hora:'09:12',data:new Date().toLocaleDateString('pt-BR'),criado:Date.now()-8*60000},
     {id:'p002',nome:'João Pereira',tel:'11912345678',endereco:'Av. Central, 100',
      itens:[{nome:'Banana Nanica',qtd:'1kg'},{nome:'Arroz 1 KG',qtd:'2x'},{nome:'Feijão Carioca',qtd:'1x'}],
-     obs:'',status:'Em preparo',hora:'09:45',data:new Date().toLocaleDateString('pt-BR'),criado:Date.now()-25*60000},
+     obs:'',status:'Separando pedido',hora:'09:45',data:new Date().toLocaleDateString('pt-BR'),criado:Date.now()-25*60000},
     {id:'p003',nome:'Ana Costa',tel:'11955551234',endereco:'Rua Verde, 7',
      itens:[{nome:'Amendoim Torrado',qtd:'300g'},{nome:'Camomila',qtd:'100g'}],
      obs:'Entregar no portão azul',status:'Saiu para entrega',hora:'10:05',data:new Date().toLocaleDateString('pt-BR'),criado:Date.now()-45*60000},
@@ -668,7 +679,7 @@ function renderHorarios(){
 }
 
 // ── PEDIDOS ────────────────────────────────────────────────────────────
-const STATUS_ORDER=['Recebido','Em preparo','Saiu para entrega','Entregue','Cancelado'];
+const STATUS_ORDER=['Recebido','Separando pedido','Aguardando pagamento','Pago','Saiu para entrega','Entregue','Cancelado'];
 
 async function carregarPedidosSupabase(){
   try{
@@ -680,15 +691,21 @@ async function carregarPedidosSupabase(){
         pedidosLocal.unshift({
           id:'sb'+r.id,sbId:r.id,
           nome:r.nome_cliente||r.nome||'Cliente',
-          tel:r.celular||'',
+          tel:r.celular||r.telefone||r.whatsapp||r.tel||'',
           endereco:r.endereco||'',
-          itens:(r.itens||[]).map(i=>({nome:i.nome||i.n||'',qtd:i.qtd||''})),
-          obs:'',
+          itens:(r.itens||[]).map(i=>({nome:i.nome||i.n||'',qtd:i.qtd||'',itemOriginal:i.itemOriginal||i})),
+          obs:r.obs||r.observacao||'',
+          total:Number(r.total||r.valor||r.valor_total||r.valor_final||0),
+          valor:Number(r.total||r.valor||r.valor_total||r.valor_final||0),
           status:r.status||'Recebido',
           hora:new Date(r.criado_em||Date.now()).toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'}),
           data:new Date(r.criado_em||Date.now()).toLocaleDateString('pt-BR'),
           criado:new Date(r.criado_em||Date.now()).getTime()
         });
+      }else{
+        ex.status=r.status||ex.status||'Recebido';
+        const valorAtual=Number(r.total||r.valor||r.valor_total||r.valor_final||0);
+        if(valorAtual){ex.total=valorAtual;ex.valor=valorAtual;}
       }
     });
     localStorage.setItem('horta_pedidos_admin',JSON.stringify(pedidosLocal));
@@ -703,7 +720,7 @@ async function renderPedidos(){
 
   // stats
   const novos=pedidosLocal.filter(p=>p.status==='Recebido').length;
-  const prep=pedidosLocal.filter(p=>p.status==='Em preparo').length;
+  const prep=pedidosLocal.filter(p=>['Separando pedido','Aguardando pagamento','Pago'].includes(p.status)).length;
   const ent=pedidosLocal.filter(p=>p.status==='Entregue').length;
   document.getElementById('stat-total').textContent=pedidosLocal.length;
   document.getElementById('stat-novos').textContent=novos;
@@ -716,12 +733,12 @@ async function renderPedidos(){
   }
 
   lista.innerHTML=filtrados.map(p=>{
-    const cls=p.status==='Recebido'?'urgente':p.status==='Em preparo'?'em-preparo':p.status==='Saiu para entrega'?'saiu':p.status==='Entregue'?'entregue':'';
-    const pilCls=p.status==='Recebido'?'pill-r':p.status==='Em preparo'?'pill-p':p.status==='Saiu para entrega'?'pill-s':p.status==='Entregue'?'pill-e':'pill-c';
+    const cls=p.status==='Recebido'?'urgente':(['Separando pedido','Aguardando pagamento','Pago'].includes(p.status)?'em-preparo':p.status==='Saiu para entrega'?'saiu':p.status==='Entregue'?'entregue':'');
+    const pilCls=p.status==='Recebido'?'pill-r':(['Separando pedido','Aguardando pagamento'].includes(p.status)?'pill-p':p.status==='Pago'?'pill-e':p.status==='Saiu para entrega'?'pill-s':p.status==='Entregue'?'pill-e':'pill-c');
     const mins=Math.floor((Date.now()-(p.criado||Date.now()))/60000);
     const tempo=mins<1?'agora mesmo':mins<60?`há ${mins}min`:`há ${Math.floor(mins/60)}h`;
     const itensHtml=(p.itens||[]).map(i=>`• ${i.qtd||''} de ${i.nome||i.n||''}`).join('\n');
-    const wppMsg=encodeURIComponent(`🌿 *Horta em Casa*\nOlá ${p.nome}! Seu pedido está *${p.status.toLowerCase()}*. 😊`);
+    const wppMsg=encodeURIComponent(montarMensagemStatus(p));
     return `<div class="pedido-card ${cls}" id="pc-${p.id}">
       <div class="pedido-head">
         <div>
@@ -735,23 +752,100 @@ async function renderPedidos(){
       ${p.tel?`<div class="pedido-end">📱 ${p.tel}</div>`:''}
       <div class="pedido-itens" style="white-space:pre-line">${itensHtml}</div>
       ${p.obs?`<div class="pedido-obs">📝 ${p.obs}</div>`:''}
+      <div class="valor-final-box">
+        <label>Valor final</label>
+        <input type="text" id="valor-${p.id}" value="${formatarValorInput(p.total||p.valor||p.valor_final||0)}" placeholder="R$ 0,00">
+        <button onclick="salvarValorPedido('${p.id}')">Salvar</button>
+        <span class="valor-final-help">Use esse valor antes de mudar para “Aguardando pagamento”.</span>
+      </div>
       <div class="pedido-actions">
         <select class="status-select" onchange="atuStatus('${p.id}',this.value)">
           ${STATUS_ORDER.map(s=>`<option value="${s}" ${s===p.status?'selected':''}>${s}</option>`).join('')}
         </select>
-        ${p.tel?`<button class="pbtn pbtn-wpp" onclick="window.open('https://wa.me/55'+(p.tel||'').replace(/\D/g,'')+('?text='+wppMsg),'_blank')">WhatsApp</button>`:''}
+        ${p.tel?`<button class="pbtn pbtn-wpp" onclick="enviarMensagemStatus('${p.id}')">Enviar WhatsApp</button>`:''}
         <button class="pbtn pbtn-del" onclick="removerPedido('${p.id}')">✕</button>
       </div>
     </div>`;
   }).join('');
 }
 
-function atuStatus(id,status){
+function valorNumerico(v){
+  if(typeof v==='number')return Number.isFinite(v)?v:0;
+  if(!v)return 0;
+  let txt=String(v).trim().replace(/R\$/gi,'').replace(/\s/g,'');
+  if(txt.includes(',')&&txt.includes('.'))txt=txt.replace(/\./g,'').replace(',','.');
+  else if(txt.includes(','))txt=txt.replace(',','.');
+  const n=Number(txt);
+  return Number.isFinite(n)?n:0;
+}
+function moedaBR(v){return valorNumerico(v).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});}
+function formatarValorInput(v){const n=valorNumerico(v);return n?moedaBR(n):'';}
+function telLimpo(p){
+  // Aceita telefone salvo como (11) 99999-9999, 11999999999, +55..., 55...
+  let tel=String(p.tel||p.celular||p.telefone||p.whatsapp||'').replace(/\D/g,'');
+  // Se vier com 55 duplicado, remove duplicação
+  while(tel.startsWith('5555')) tel=tel.slice(2);
+  // Se vier sem DDI, adiciona Brasil
+  if(tel.length===10 || tel.length===11) tel='55'+tel;
+  return tel;
+}
+function itensTexto(p){return (p.itens||[]).map(i=>`• ${i.qtd||''} de ${i.nome||i.n||''}`.trim()).join('\n');}
+function montarMensagemPagamento(p){
+  return `🌿 *Horta em Casa*\n\nOlá, ${p.nome}! Seu pedido já foi separado.\n\n*Itens:*\n${itensTexto(p)}\n\n*Valor final:* ${moedaBR(p.total||p.valor||0)}\n\nAgora estamos aguardando o pagamento para seguir com a entrega. 😊`;
+}
+function montarMensagemStatus(p){
+  if(p.status==='Aguardando pagamento')return montarMensagemPagamento(p);
+  return `🌿 *Horta em Casa*\nOlá ${p.nome}! Seu pedido está *${String(p.status||'Recebido').toLowerCase()}*. 😊`;
+}
+async function salvarValorPedido(id, silencioso=false){
+  const p=pedidosLocal.find(x=>x.id===id);
+  const inp=document.getElementById('valor-'+id);
+  if(!p||!inp)return 0;
+  const total=valorNumerico(inp.value);
+  p.total=total;
+  p.valor=total;
+  localStorage.setItem('horta_pedidos_admin',JSON.stringify(pedidosLocal));
+  if(p.sbId){
+    try{await sbPatch('pedidos',`id=eq.${p.sbId}`,{total,valor_final:total});}
+    catch(e){console.warn(e);if(!silencioso)toast('Valor salvo localmente, mas não consegui atualizar no Supabase','aviso');return total;}
+  }
+  inp.value=formatarValorInput(total);
+  if(!silencioso)toast('💰 Valor final salvo no pedido');
+  return total;
+}
+function abrirWhatsAppPedido(p,msg){
+  const tel=telLimpo(p);
+  if(!tel || tel.length<12){toast('Cliente sem telefone válido cadastrado','erro');return;}
+  const url='https://wa.me/'+tel+'?text='+encodeURIComponent(msg);
+  const w=window.open(url,'_blank','noopener,noreferrer');
+  // Alguns celulares/navegadores bloqueiam nova aba. Se bloquear, abre na mesma janela.
+  if(!w){ window.location.href=url; }
+}
+async function enviarMensagemStatus(id){
   const p=pedidosLocal.find(x=>x.id===id);
   if(!p)return;
+  if(p.status==='Aguardando pagamento'){
+    const total=await salvarValorPedido(id,true);
+    if(!total){toast('Informe o valor final antes de enviar a cobrança','erro');return;}
+  }
+  abrirWhatsAppPedido(p,montarMensagemStatus(p));
+}
+async function atuStatus(id,status){
+  const p=pedidosLocal.find(x=>x.id===id);
+  if(!p)return;
+  if(status==='Aguardando pagamento'){
+    const total=await salvarValorPedido(id,true);
+    if(!total){toast('Informe o valor final antes de mudar para aguardando pagamento','erro');renderPedidos();return;}
+    p.status=status;
+    localStorage.setItem('horta_pedidos_admin',JSON.stringify(pedidosLocal));
+    if(p.sbId){sbPatch('pedidos',`id=eq.${p.sbId}`,{status,total,valor_final:total,pagamento_enviado_em:new Date().toISOString()}).catch(()=>{});}
+    renderPedidos();
+    abrirWhatsAppPedido(p,montarMensagemPagamento(p));
+    toast('💳 Status atualizado e mensagem de pagamento aberta no WhatsApp');
+    return;
+  }
   p.status=status;
   localStorage.setItem('horta_pedidos_admin',JSON.stringify(pedidosLocal));
-  // Tentar atualizar Supabase se tiver sbId
   if(p.sbId){sbPatch('pedidos',`id=eq.${p.sbId}`,{status}).catch(()=>{});}
   renderPedidos();
   toast('✅ Status atualizado para: '+status);
