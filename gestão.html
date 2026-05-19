@@ -321,20 +321,16 @@ body{font-family:'DM Sans',sans-serif;background:var(--creme);color:var(--escuro
   <!-- Nav Tabs -->
   <div class="nav-tabs">
     <button class="ntab active" onclick="irPara('pedidos')" id="tab-pedidos">
-      📦 Pedidos <span class="badge red" id="badge-pedidos">0</span>
+      📦 Pedidos<span class="badge red" id="badge-pedidos">0</span>
     </button>
     <button class="ntab" onclick="irPara('produtos')" id="tab-produtos">
-      🌿 Produtos
-    </button>
+      🌿 Produtos</button>
     <button class="ntab" onclick="irPara('ofertas')" id="tab-ofertas">
-      🏷️ Ofertas
-    </button>
+      🏷️ Ofertas</button>
     <button class="ntab" onclick="irPara('relatorios')" id="tab-relatorios">
-      📊 Relatórios
-    </button>
+      📊 Relatórios</button>
     <button class="ntab" onclick="irPara('loja')" id="tab-loja">
-      🏪 Loja
-    </button>
+      🏪 Loja</button>
   </div>
 
   <!-- ── PÁGINA: PEDIDOS ─────────────────────────────────────────── -->
@@ -348,12 +344,12 @@ body{font-family:'DM Sans',sans-serif;background:var(--creme);color:var(--escuro
 
     <div class="pedidos-filter">
       <button class="pfilter active" onclick="filtrarPedidos('todos',this)">Todos</button>
-      <button class="pfilter" onclick="filtrarPedidos('Recebido',this)">📩 Recebidos</button>
-      <button class="pfilter" onclick="filtrarPedidos('Separando pedido',this)">🍃 Separando</button>
-      <button class="pfilter" onclick="filtrarPedidos('Aguardando pagamento',this)">💳 Aguard. pagamento</button>
-      <button class="pfilter" onclick="filtrarPedidos('Pago',this)">✅ Pago</button>
-      <button class="pfilter" onclick="filtrarPedidos('Saiu para entrega',this)">🛵 A caminho</button>
-      <button class="pfilter" onclick="filtrarPedidos('Entregue',this)">✅ Entregues</button>
+      <button class="pfilter" onclick="filtrarPedidos('Recebido',this)">Recebidos</button>
+      <button class="pfilter" onclick="filtrarPedidos('Separando pedido',this)">Separando</button>
+      <button class="pfilter" onclick="filtrarPedidos('Aguardando pagamento',this)">Aguard. pagamento</button>
+      <button class="pfilter" onclick="filtrarPedidos('Pago',this)">Pago</button>
+      <button class="pfilter" onclick="filtrarPedidos('Saiu para entrega',this)">A caminho</button>
+      <button class="pfilter" onclick="filtrarPedidos('Entregue',this)">Entregues</button>
     </div>
 
     <div id="lista-pedidos"></div>
@@ -361,11 +357,11 @@ body{font-family:'DM Sans',sans-serif;background:var(--creme);color:var(--escuro
 
   <!-- ── PÁGINA: PRODUTOS ─────────────────────────────────────────── -->
   <div class="page" id="page-produtos">
-    <div class="page-title"><span class="pt-icon">🌿</span> Gestão de Produtos</div>
+    <div class="page-title">Gestão de Produtos</div>
 
     <!-- Adicionar novo produto -->
     <div class="scard">
-      <div class="scard-title">➕ Adicionar novo produto</div>
+      <div class="scard-title">Adicionar novo produto</div>
       <div class="form-grid">
         <div class="field">
           <label>Nome do produto</label>
@@ -407,9 +403,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--creme);color:var(--escuro
 
     <!-- Lista de produtos -->
     <div class="scard">
-      <div class="scard-title">📋 Todos os produtos</div>
+      <div class="scard-title">Todos os produtos</div>
       <div class="search-bar">
-        <input type="text" class="search-inp" id="busca-prod" placeholder="🔍 Buscar produto..." oninput="renderProdutosAdmin()">
+        <input type="text" class="search-inp" id="busca-prod" placeholder="Buscar produto..." oninput="renderProdutosAdmin()">
         <select class="field" style="padding:.6rem .8rem;border:1.5px solid var(--cinza-l);border-radius:50px;font-size:.8rem;outline:none;" id="filtro-cat-admin" onchange="renderProdutosAdmin()">
           <option value="">Todas as categorias</option>
           <option value="Frutas, verduras e legumes">Frutas e legumes</option>
@@ -427,7 +423,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--creme);color:var(--escuro
 
   <!-- ── PÁGINA: OFERTAS ─────────────────────────────────────────── -->
   <div class="page" id="page-ofertas">
-    <div class="page-title"><span class="pt-icon">🏷️</span> Ofertas</div>
+    <div class="page-title">Ofertas</div>
 
     <div class="oferta-tabs">
       <button class="oferta-tab active" onclick="trocarOfertaTab('dia',this)">Oferta do Dia</button>
@@ -453,10 +449,10 @@ body{font-family:'DM Sans',sans-serif;background:var(--creme);color:var(--escuro
           <label style="font-size:.74rem;font-weight:700;color:var(--cinza);text-transform:uppercase;letter-spacing:.04em;display:block;margin:.75rem 0 .4rem;">Flyer / Imagem da oferta</label>
           <div class="flyer-preview-wrap" id="od-flyer-preview-wrap">
             <img id="od-flyer-preview-img" src="" alt="preview">
-            <button class="flyer-remove-btn" onclick="removerFlyerPreview('od')">✕ Remover</button>
+            <button class="flyer-remove-btn" onclick="removerFlyerPreview('od')">Remover</button>
           </div>
           <div class="flyer-upload-area" id="od-upload-area" onclick="document.getElementById('od-flyer-input').click()">
-            <div style="font-size:2rem;">🖼️</div>
+            
             <p>Clique para enviar seu flyer (JPG, PNG)</p>
             <input type="file" id="od-flyer-input" accept="image/*" style="display:none" onchange="previewFlyer('od',this)">
           </div>
@@ -467,7 +463,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--creme);color:var(--escuro
 
     <div id="oferta-semana-wrap" style="display:none;">
       <div class="scard">
-        <div class="scard-title">📅 Ofertas da semana</div>
+        <div class="scard-title">Ofertas da semana</div>
         <div id="lista-ofertas-semana" class="oferta-list"></div>
         <div class="divider">+ Adicionar oferta da semana</div>
         <div class="add-oferta-form">
@@ -484,10 +480,10 @@ body{font-family:'DM Sans',sans-serif;background:var(--creme);color:var(--escuro
           <label style="font-size:.74rem;font-weight:700;color:var(--cinza);text-transform:uppercase;letter-spacing:.04em;display:block;margin:.75rem 0 .4rem;">Flyer / Imagem da oferta</label>
           <div class="flyer-preview-wrap" id="os-flyer-preview-wrap">
             <img id="os-flyer-preview-img" src="" alt="preview">
-            <button class="flyer-remove-btn" onclick="removerFlyerPreview('os')">✕ Remover</button>
+            <button class="flyer-remove-btn" onclick="removerFlyerPreview('os')">Remover</button>
           </div>
           <div class="flyer-upload-area" id="os-upload-area" onclick="document.getElementById('os-flyer-input').click()">
-            <div style="font-size:2rem;">🖼️</div>
+            
             <p>Clique para enviar seu flyer (JPG, PNG)</p>
             <input type="file" id="os-flyer-input" accept="image/*" style="display:none" onchange="previewFlyer('os',this)">
           </div>
@@ -499,14 +495,14 @@ body{font-family:'DM Sans',sans-serif;background:var(--creme);color:var(--escuro
 
   <!-- ── PÁGINA: LOJA ─────────────────────────────────────────────── -->
   <div class="page" id="page-loja">
-    <div class="page-title"><span class="pt-icon">🏪</span> Status da Loja</div>
+    <div class="page-title">Status da Loja</div>
 
     <div class="scard">
       <div class="status-big" id="status-big-area"></div>
     </div>
 
     <div class="scard horario-card">
-      <div class="scard-title">🕐 Horários de funcionamento</div>
+      <div class="scard-title">Horários de funcionamento</div>
       <div id="horarios-list"></div>
     </div>
   </div>
@@ -518,12 +514,12 @@ body{font-family:'DM Sans',sans-serif;background:var(--creme);color:var(--escuro
   <div class="mbox">
     <div class="mbox-head">
       <h3 id="modal-foto-titulo">Editar foto</h3>
-      <button class="mclose" onclick="fecharFoto()">✕</button>
+      <button class="mclose" onclick="fecharFoto()"></button>
     </div>
     <div class="foto-preview" id="foto-preview-box"></div>
     <div class="divider">Fazer upload de imagem</div>
     <div class="foto-upload-area" onclick="document.getElementById('foto-file-input').click()">
-      <div style="font-size:2rem;">📸</div>
+      
       <p>Clique para escolher uma foto do celular ou computador</p>
       <input type="file" id="foto-file-input" accept="image/*" onchange="previewFotoFile(this)">
     </div>
@@ -572,44 +568,356 @@ if(logado){
 }
 
 // ── ESTADO ────────────────────────────────────────────────────────────
-const CATS={'Frutas, verduras e legumes':'🍎','Verduras':'🥬','Grãos':'🌾','Temperos':'🧂','Chás':'🍵','Alimentos processados':'🥗','Mercado':'🛒'};
-
-function emojiAuto(n,c){
-  const nm=(n||'').toLowerCase();
-  const m=[[['tomate'],'🍅'],[['alface'],'🥬'],[['banana'],'🍌'],[['cenoura'],'🥕'],
-    [['maçã','maca'],'🍎'],[['coentro'],'🌿'],[['batata'],'🥔'],[['limão','limao'],'🍋'],
-    [['laranja'],'🍊'],[['abacate'],'🥑'],[['abacaxi'],'🍍'],[['manga'],'🥭'],
-    [['morango'],'🍓'],[['uva'],'🍇'],[['melancia'],'🍉'],[['melão','melao'],'🍈'],
-    [['cebola'],'🧅'],[['alho'],'🧄'],[['pimentão','pimentao'],'🫑'],[['pepino'],'🥒'],
-    [['abobrinha'],'🥒'],[['abóbora','abobora'],'🎃'],[['gengibre'],'🫚'],
-    [['coco'],'🥥'],[['mamão','mamao'],'🍑'],[['maracujá','maracuja'],'🌺'],[['kiwi'],'🥝'],
-    [['pera'],'🍐'],[['ameixa'],'🍑'],[['mirtilo'],'🫐'],
-    [['arroz'],'🍚'],[['feijão','feijao'],'🫘'],[['milho'],'🌽'],
-    [['aveia','farinha','fubá'],'🌾'],[['castanha','nozes','amendoim'],'🥜'],
-    [['mel'],'🍯'],[['café'],'☕'],[['chá','hibisco','camomila','melissa','boldo'],'🍵'],
-    [['pão','biscoito','bolo'],'🍞'],[['leite'],'🥛'],[['queijo','requeijão'],'🧀'],
-    [['ovo'],'🥚'],[['azeite','óleo'],'🫙'],[['macarrão'],'🍝'],[['própolis'],'🍯']];
-  for(const[ks,em]of m)if(ks.some(k=>nm.includes(k)))return em;
-  return CATS[c]||'📦';
-}
+const CATS={'Frutas, verduras e legumes':'','Verduras':'','Grãos':'','Temperos':'','Chás':'','Alimentos processados':'','Mercado':''};
+function emojiAuto(n,c){ return ''; }
 function cap(s){return s?s.charAt(0).toUpperCase()+s.slice(1).toLowerCase():'';}
 
-// Dados locais (fallback / demo)
+const FOTOS = {
+  // ── Frutas, verduras e legumes ──────────────────────────────
+  "ABACATE":              "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Avocado_with_cross_section_edit.jpg/300px-Avocado_with_cross_section_edit.jpg",
+  "AVOCADO":              "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Avocado_with_cross_section_edit.jpg/300px-Avocado_with_cross_section_edit.jpg",
+  "ABACAXI":              "https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Ananas_nci-vol-2-226-300ppi.jpg/300px-Ananas_nci-vol-2-226-300ppi.jpg",
+  "ABÓBORA JAPONESA":     "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Kabocha.jpg/300px-Kabocha.jpg",
+  "ABÓBORA PESCOÇO":      "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Butternut_squash.jpg/300px-Butternut_squash.jpg",
+  "ABOBRINHA ITALIANA":   "https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Zucchini_1_kg.jpg/300px-Zucchini_1_kg.jpg",
+  "ACEROLA":              "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Acerola_-_Malpighia_emarginata.jpg/300px-Acerola_-_Malpighia_emarginata.jpg",
+  "ALHO":                 "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Garlic-separated-by-Phantom-Open-Emoji.png/300px-Garlic-separated-by-Phantom-Open-Emoji.png",
+  "AMEIXA NACIONAL":      "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Plum_ume_u.jpg/300px-Plum_ume_u.jpg",
+  "AMEIXA RUBI MEL":      "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Plum_ume_u.jpg/300px-Plum_ume_u.jpg",
+  "BANANA MAÇÃ":          "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Bananas_white_background_DS.jpg/300px-Bananas_white_background_DS.jpg",
+  "BANANA NANICA":        "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Bananas_white_background_DS.jpg/300px-Bananas_white_background_DS.jpg",
+  "BANANA PRATA":         "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Bananas_white_background_DS.jpg/300px-Bananas_white_background_DS.jpg",
+  "BANANA TERRA":         "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Bananas_white_background_DS.jpg/300px-Bananas_white_background_DS.jpg",
+  "BATATA ASTERIX":       "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Potato_and_cross_section.jpg/300px-Potato_and_cross_section.jpg",
+  "BATATA BOLINHA":       "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Potato_and_cross_section.jpg/300px-Potato_and_cross_section.jpg",
+  "BATATA DOCE BRANCA":   "https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Ipomoea_batatas_006.jpg/300px-Ipomoea_batatas_006.jpg",
+  "BATATA DOCE ROSADA":   "https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Ipomoea_batatas_006.jpg/300px-Ipomoea_batatas_006.jpg",
+  "BATATA DOCE ROXA":     "https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Ipomoea_batatas_006.jpg/300px-Ipomoea_batatas_006.jpg",
+  "BATATA INGLESA":       "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Potato_and_cross_section.jpg/300px-Potato_and_cross_section.jpg",
+  "BERINJELA":            "https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Aubergine.jpg/300px-Aubergine.jpg",
+  "BETERRABA":            "https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Beet_at_Jean-Talon_Market.jpg/300px-Beet_at_Jean-Talon_Market.jpg",
+  "CAJU":                 "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Caju.jpg/300px-Caju.jpg",
+  "CAQUI CHOCOLATE":      "https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/Persimmon_100542700.jpg/300px-Persimmon_100542700.jpg",
+  "CAQUI FUYU":           "https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/Persimmon_100542700.jpg/300px-Persimmon_100542700.jpg",
+  "CAQUI RAMA FORTE":     "https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/Persimmon_100542700.jpg/300px-Persimmon_100542700.jpg",
+  "CARÁ":                 "https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Tapioca_Roots.jpg/300px-Tapioca_Roots.jpg",
+  "CARAMBOLA":            "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Carambola_flowers_from_Kerala.jpg/300px-Carambola_flowers_from_Kerala.jpg",
+  "CEBOLA":               "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Onions.jpg/300px-Onions.jpg",
+  "CEBOLA MINI":          "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Onions.jpg/300px-Onions.jpg",
+  "CEBOLA ROXA":          "https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Red_onion_cross_section.jpg/300px-Red_onion_cross_section.jpg",
+  "CENOURA":              "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Vegetable-Carrot-Bundle-wStalks.jpg/300px-Vegetable-Carrot-Bundle-wStalks.jpg",
+  "CEREJA":               "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Cherry_Stella444.jpg/300px-Cherry_Stella444.jpg",
+  "CHUCHU":               "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Chayote_Sechium_edule.jpg/300px-Chayote_Sechium_edule.jpg",
+  "COCO SECO":            "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Coconut_on_white_background_DS.jpg/300px-Coconut_on_white_background_DS.jpg",
+  "COCO VERDE":           "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Coconut_on_white_background_DS.jpg/300px-Coconut_on_white_background_DS.jpg",
+  "GENGIBRE":             "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Ginger_roots.jpg/300px-Ginger_roots.jpg",
+  "GOIABA BRANCA":        "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Pink_guava_DSCN0647.jpg/300px-Pink_guava_DSCN0647.jpg",
+  "GOIABA VERMELHA":      "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Pink_guava_DSCN0647.jpg/300px-Pink_guava_DSCN0647.jpg",
+  "INHAME":               "https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Taro_from_Indonesia.jpg/300px-Taro_from_Indonesia.jpg",
+  "JILÓ":                 "https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/Jilo_frutos.jpg/300px-Jilo_frutos.jpg",
+  "KIWI":                 "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Kiwi_aka.jpg/300px-Kiwi_aka.jpg",
+  "LARANJA":              "https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Oranges_and_orange_juice.jpg/300px-Oranges_and_orange_juice.jpg",
+  "LARANJA BAHIA":        "https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Oranges_and_orange_juice.jpg/300px-Oranges_and_orange_juice.jpg",
+  "LARANJA LIMA":         "https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Oranges_and_orange_juice.jpg/300px-Oranges_and_orange_juice.jpg",
+  "LIMÃO SICILIANO":      "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Lemon.jpg/300px-Lemon.jpg",
+  "LIMÃO TAHITI":         "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Hapus_Lime.jpg/300px-Hapus_Lime.jpg",
+  "MAÇÃ ARGENTINA":       "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Red_Apple.jpg/300px-Red_Apple.jpg",
+  "MAÇÃ FUJI":            "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Red_Apple.jpg/300px-Red_Apple.jpg",
+  "MAÇÃ GALA":            "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Red_Apple.jpg/300px-Red_Apple.jpg",
+  "MAÇÃ VERDE":           "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Honeycrisp.jpg/300px-Honeycrisp.jpg",
+  "MAMÃO FORMOSA":        "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Papaya_-_single.jpg/300px-Papaya_-_single.jpg",
+  "MAMÃO PAPAYA":         "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Papaya_-_single.jpg/300px-Papaya_-_single.jpg",
+  "MANDIOCA COM CASCA":   "https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Tapioca_Roots.jpg/300px-Tapioca_Roots.jpg",
+  "MANDIOCA SEM CASCA":   "https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Tapioca_Roots.jpg/300px-Tapioca_Roots.jpg",
+  "MANDIOQUINHA":         "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Arracacha_kcj.jpg/300px-Arracacha_kcj.jpg",
+  "MANGA BOURBON":        "https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Hapus_Mango.jpg/300px-Hapus_Mango.jpg",
+  "MANGA COQUINHO":       "https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Hapus_Mango.jpg/300px-Hapus_Mango.jpg",
+  "MANGA ESPADA":         "https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Hapus_Mango.jpg/300px-Hapus_Mango.jpg",
+  "MANGA PALMER":         "https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Hapus_Mango.jpg/300px-Hapus_Mango.jpg",
+  "MANGA TOMY":           "https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Hapus_Mango.jpg/300px-Hapus_Mango.jpg",
+  "MARACUJÁ":             "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Passion_fruit_sliced.jpg/300px-Passion_fruit_sliced.jpg",
+  "MARACUJÁ DOCE":        "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Passion_fruit_sliced.jpg/300px-Passion_fruit_sliced.jpg",
+  "MAXIXE":               "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Cucumis_anguria0.jpg/300px-Cucumis_anguria0.jpg",
+  "MELANCIA":             "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Watermelon_cross_BNC.jpg/300px-Watermelon_cross_BNC.jpg",
+  "MELANCIA BABY":        "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Watermelon_cross_BNC.jpg/300px-Watermelon_cross_BNC.jpg",
+  "MELÃO GRAÚDO":         "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Cantaloupes.jpg/300px-Cantaloupes.jpg",
+  "MELÃO MIÚDO":          "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Cantaloupes.jpg/300px-Cantaloupes.jpg",
+  "MELÃO PELE SAPO":      "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Cantaloupes.jpg/300px-Cantaloupes.jpg",
+  "MELÃO REDINHA":        "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Cantaloupes.jpg/300px-Cantaloupes.jpg",
+  "MEXERICA CARIOCA":     "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Clementine.jpg/300px-Clementine.jpg",
+  "MEXERICA MORGOT":      "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Clementine.jpg/300px-Clementine.jpg",
+  "MEXERICA POKAN":       "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Clementine.jpg/300px-Clementine.jpg",
+  "MIRTILO":              "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Blueberries_in_glasses.jpg/300px-Blueberries_in_glasses.jpg",
+  "MORANGO":              "https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/PerfectStrawberry.jpg/300px-PerfectStrawberry.jpg",
+  "NECTARINA":            "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Nectarines_at_Bristol_Farms.jpg/300px-Nectarines_at_Bristol_Farms.jpg",
+  "NÊSPERA":              "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Loquat_-_whole_and_halved.jpg/300px-Loquat_-_whole_and_halved.jpg",
+  "PEPINO CAIPIRA":       "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Cucumber_cross_section.jpg/300px-Cucumber_cross_section.jpg",
+  "PEPINO COMUM":         "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Cucumber_cross_section.jpg/300px-Cucumber_cross_section.jpg",
+  "PEPINO JAPONÊS":       "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Cucumber_cross_section.jpg/300px-Cucumber_cross_section.jpg",
+  "PERA PORTUGUESA":      "https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Pear_ds.jpg/300px-Pear_ds.jpg",
+  "PERA WILLIANS":        "https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Pear_ds.jpg/300px-Pear_ds.jpg",
+  "PÊSSEGO NACIONAL":     "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Hapus_Peach.jpg/300px-Hapus_Peach.jpg",
+  "PIMENTA CAMBUCI":      "https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Sweet-pep-per-04.jpg/300px-Sweet-pep-per-04.jpg",
+  "PIMENTÃO AMARELO":     "https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Sweet-pep-per-04.jpg/300px-Sweet-pep-per-04.jpg",
+  "PIMENTÃO VERDE":       "https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Capsicum_annuum_var._annuum_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-027.jpg/300px-Capsicum_annuum_var._annuum_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-027.jpg",
+  "PIMENTÃO VERMELHO":    "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Fruits_of_Capsicum_annuum.jpg/300px-Fruits_of_Capsicum_annuum.jpg",
+  "PITAYA AMARELA":       "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Dragonfruit_-_%E5%8F%B0%E7%81%A3_%E7%B4%85%E9%BE%8D%E6%9E%9C.jpg/300px-Dragonfruit_-_%E5%8F%B0%E7%81%A3_%E7%B4%85%E9%BE%8D%E6%9E%9C.jpg",
+  "PITAYA BRANCA":        "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Dragonfruit_-_%E5%8F%B0%E7%81%A3_%E7%B4%85%E9%BE%8D%E6%9E%9C.jpg/300px-Dragonfruit_-_%E5%8F%B0%E7%81%A3_%E7%B4%85%E9%BE%8D%E6%9E%9C.jpg",
+  "PITAYA VERMELHA":      "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Dragonfruit_-_%E5%8F%B0%E7%81%A3_%E7%B4%85%E9%BE%8D%E6%9E%9C.jpg/300px-Dragonfruit_-_%E5%8F%B0%E7%81%A3_%E7%B4%85%E9%BE%8D%E6%9E%9C.jpg",
+  "QUIABO":               "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Okra_2_lbs.jpg/300px-Okra_2_lbs.jpg",
+  "ROMÃ":                 "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Pomegranate_fruit_-_whole_and_pieces.jpg/300px-Pomegranate_fruit_-_whole_and_pieces.jpg",
+  "TOMATE CARMEM":        "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Tomato_je.jpg/300px-Tomato_je.jpg",
+  "TOMATE CEREJA":        "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Cherry_tomatoes_red_and_yellow.jpg/300px-Cherry_tomatoes_red_and_yellow.jpg",
+  "TOMATE ITALIANO":      "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Tomato_je.jpg/300px-Tomato_je.jpg",
+  "UVA CRINSON":          "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Table_grapes_on_white.jpg/300px-Table_grapes_on_white.jpg",
+  "UVA ITÁLIA":           "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Table_grapes_on_white.jpg/300px-Table_grapes_on_white.jpg",
+  "UVA NIAGARA":          "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Table_grapes_on_white.jpg/300px-Table_grapes_on_white.jpg",
+  "UVA RUBI":             "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Table_grapes_on_white.jpg/300px-Table_grapes_on_white.jpg",
+  "UVA THOMPSON":         "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Table_grapes_on_white.jpg/300px-Table_grapes_on_white.jpg",
+  "UVA VITÓRIA":          "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Table_grapes_on_white.jpg/300px-Table_grapes_on_white.jpg",
+  "VAGEM":                "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Haricots_verts.jpg/300px-Haricots_verts.jpg",
+
+  // ── Verduras ────────────────────────────────────────────────
+  "ACELGA":               "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/SwissChard.jpg/300px-SwissChard.jpg",
+  "AGRIÃO":               "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Watercress.jpg/300px-Watercress.jpg",
+  "ALECRIM":              "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Rosemary_bush.jpg/300px-Rosemary_bush.jpg",
+  "ALFACE AMERICANA":     "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Lettuce_unrestored_0.jpg/300px-Lettuce_unrestored_0.jpg",
+  "ALFACE CRESPA":        "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Lettuce_unrestored_0.jpg/300px-Lettuce_unrestored_0.jpg",
+  "ALFACE FRIZZE":        "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Lettuce_unrestored_0.jpg/300px-Lettuce_unrestored_0.jpg",
+  "ALFACE LISA":          "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Lettuce_unrestored_0.jpg/300px-Lettuce_unrestored_0.jpg",
+  "ALFACE MIMOSA":        "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Lettuce_unrestored_0.jpg/300px-Lettuce_unrestored_0.jpg",
+  "ALFACE ROXA":          "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Lettuce_unrestored_0.jpg/300px-Lettuce_unrestored_0.jpg",
+  "ALHO PORÓ":            "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Leeks_together.jpg/300px-Leeks_together.jpg",
+  "ALMEIRÃO":             "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/Chicory_top.jpg/300px-Chicory_top.jpg",
+  "BRÓCOLIS COMUM":       "https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/Broccoli_and_cross_section_edit.jpg/300px-Broccoli_and_cross_section_edit.jpg",
+  "BRÓCOLIS NINJA":       "https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/Broccoli_and_cross_section_edit.jpg/300px-Broccoli_and_cross_section_edit.jpg",
+  "CEBOLINHA":            "https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Chives_overhead.jpg/300px-Chives_overhead.jpg",
+  "COENTRO":              "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Coriander_herb.jpg/300px-Coriander_herb.jpg",
+  "COUVE":                "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/Kale-Bundle.jpg/300px-Kale-Bundle.jpg",
+  "COUVE FLOR":           "https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Cauliflower_2.jpg/300px-Cauliflower_2.jpg",
+  "ESPINAFRE":            "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Spinach_Leaves.jpg/300px-Spinach_Leaves.jpg",
+  "HORTELÃ":              "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Mint-leaves-2007.jpg/300px-Mint-leaves-2007.jpg",
+  "LOURO":                "https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/BayLeaves.jpg/300px-BayLeaves.jpg",
+  "MANJERICÃO":           "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Basil-Basilico-Ocimum_basilicum-albahaca.jpg/300px-Basil-Basilico-Ocimum_basilicum-albahaca.jpg",
+  "MOSTARDA":             "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Mustard_greens_on_white.jpg/300px-Mustard_greens_on_white.jpg",
+  "RABANETE":             "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/Radish_cut_and_whole.jpg/300px-Radish_cut_and_whole.jpg",
+  "REPOLHO ROXO":         "https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Repolho_roxo.JPG/300px-Repolho_roxo.JPG",
+  "REPOLHO VERDE":        "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Cabbage_and_cross_section_on_white_2.jpg/300px-Cabbage_and_cross_section_on_white_2.jpg",
+  "RÚCULA":               "https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Eruca_vesicaria_subsp_sativa.jpg/300px-Eruca_vesicaria_subsp_sativa.jpg",
+  "SALSA":                "https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/Flat_leaf_parsley.jpg/300px-Flat_leaf_parsley.jpg",
+  "SALSÃO":               "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Celery_cross_section.jpg/300px-Celery_cross_section.jpg",
+
+  // ── Grãos ────────────────────────────────────────────────────
+  "AVEIA EM FLOCOS":                  "https://upload.wikimedia.org/wikipedia/commons/thumb/9/94/Oatmeal.jpg/300px-Oatmeal.jpg",
+  "FARELO DE AVEIA":                  "https://upload.wikimedia.org/wikipedia/commons/thumb/9/94/Oatmeal.jpg/300px-Oatmeal.jpg",
+  "FARINHA DE AVEIA":                 "https://upload.wikimedia.org/wikipedia/commons/thumb/9/94/Oatmeal.jpg/300px-Oatmeal.jpg",
+  "AMARANTO EM FLOCOS":               "https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Amaranth_sp_002.jpg/300px-Amaranth_sp_002.jpg",
+  "AVELÃ":                            "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Hazelnuts_in_bowl.jpg/300px-Hazelnuts_in_bowl.jpg",
+  "CASTANHA DE CAJU":                 "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Cashew.jpg/300px-Cashew.jpg",
+  "CASTANHA DO PARÁ":                 "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Brazil_nut_open_shell.jpg/300px-Brazil_nut_open_shell.jpg",
+  "AMENDOIM TORRADO COM SAL":         "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Peanuts_roasted.jpg/300px-Peanuts_roasted.jpg",
+  "AMENDOIM TORRADO SEM SAL":         "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Peanuts_roasted.jpg/300px-Peanuts_roasted.jpg",
+  "AMENDOIM COM CASCA TORRADO":       "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Peanuts_roasted.jpg/300px-Peanuts_roasted.jpg",
+  "AMENDOIM CARAMELIZADO":            "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Peanuts_roasted.jpg/300px-Peanuts_roasted.jpg",
+  "FEIJÃO PRETO":                     "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Black_beans.jpg/300px-Black_beans.jpg",
+  "FEIJÃO BRANCO":                    "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Haricot_blanc_sec.jpg/300px-Haricot_blanc_sec.jpg",
+  "FEIJÃO FRADINHO":                  "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Haricot_blanc_sec.jpg/300px-Haricot_blanc_sec.jpg",
+  "GRANOLA DE FRUTAS":                "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Granolabar.jpg/300px-Granolabar.jpg",
+  "GRANOLA SEM AÇÚCAR":               "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Granolabar.jpg/300px-Granolabar.jpg",
+  "LENTILHA":                         "https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/Dried_lentils.jpg/300px-Dried_lentils.jpg",
+  "MILHO DE PIPOCA":                  "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/Popcorn02.jpg/300px-Popcorn02.jpg",
+  "MIX DE CASTANHAS":                 "https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Mixed_nuts.jpg/300px-Mixed_nuts.jpg",
+  "NOZES":                            "https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Mixed_nuts.jpg/300px-Mixed_nuts.jpg",
+  "QUINOA EM GRÃOS":                  "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/White_quinoa.jpg/300px-White_quinoa.jpg",
+  "SEMENTE DE CHIA":                  "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Chia_seeds.jpg/300px-Chia_seeds.jpg",
+  "SEMENTE DE LINHAÇA DOURADA":       "https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Flax_seeds.jpg/300px-Flax_seeds.jpg",
+  "DAMASCO":                          "https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Abricots_2009_edit.jpg/300px-Abricots_2009_edit.jpg",
+  "UVA PASSA BRANCA":                 "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Raisins.jpg/300px-Raisins.jpg",
+  "UVA PASSA PRETA":                  "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Raisins.jpg/300px-Raisins.jpg",
+  "AMEIXA SECA SEM CAROÇO":           "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Prunes.jpg/300px-Prunes.jpg",
+  "CACAU EM PÓ":                      "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Cocoa_powder.jpg/300px-Cocoa_powder.jpg",
+  "CANELA EM PAU":                    "https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Dried_cinnamons.jpg/300px-Dried_cinnamons.jpg",
+  "CANELA EM PÓ":                     "https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Cinnamon-other.jpg/300px-Cinnamon-other.jpg",
+  "GERGELIM BRANCO":                  "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/White_sesame_seeds.jpg/300px-White_sesame_seeds.jpg",
+  "GERGELIM PRETO":                   "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/White_sesame_seeds.jpg/300px-White_sesame_seeds.jpg",
+  "PEPITA DE GIRASSOL":               "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Sunflower_Seeds_Purchased_from_a_Grocery_Store_in_Hackensack,_New_Jersey.jpg/300px-Sunflower_Seeds_Purchased_from_a_Grocery_Store_in_Hackensack,_New_Jersey.jpg",
+
+  // ── Temperos ────────────────────────────────────────────────
+  "AÇAFRÃO":              "https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Saffron_Crop.jpg/300px-Saffron_Crop.jpg",
+  "CURRY":                "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Indian_spices.jpg/300px-Indian_spices.jpg",
+  "PIMENTA DO REINO":     "https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Peppercorns.jpg/300px-Peppercorns.jpg",
+  "PÁPRICA DEFUMADA":     "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Paprika_powder_on_table.jpg/300px-Paprika_powder_on_table.jpg",
+  "PÁPRICA DOCE":         "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Paprika_powder_on_table.jpg/300px-Paprika_powder_on_table.jpg",
+  "PÁPRICA PICANTE":      "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Paprika_powder_on_table.jpg/300px-Paprika_powder_on_table.jpg",
+  "ORÉGANO":              "https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Dried_oregano.jpg/300px-Dried_oregano.jpg",
+  "COMINHO":              "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/CuminSeeds.jpg/300px-CuminSeeds.jpg",
+  "PIMENTA CALABRESA EM FLOCOS": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Chili_flakes.jpg/300px-Chili_flakes.jpg",
+
+  // ── Chás ────────────────────────────────────────────────────
+  "MEL ISIS":             "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Runny_hunny.jpg/300px-Runny_hunny.jpg",
+  "MEL CAMPESTRE":        "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Runny_hunny.jpg/300px-Runny_hunny.jpg",
+  "PRÓPOLIS":             "https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Propolis_-_raw.jpg/300px-Propolis_-_raw.jpg",
+  "CAMOMILA":             "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Chamomile%40original_size.jpg/300px-Chamomile%40original_size.jpg",
+  "HIBISCO":              "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Hibiscus_rosa-sinensis1.jpg/300px-Hibiscus_rosa-sinensis1.jpg",
+  "MELISSA":              "https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Lemon_balm_%28Melissa_officinalis%29.jpg/300px-Lemon_balm_%28Melissa_officinalis%29.jpg",
+  "HORTELÃ":              "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Mint-leaves-2007.jpg/300px-Mint-leaves-2007.jpg",
+  "CHÁ VERDE":            "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Green_Tea_leaves_and_tea.jpg/300px-Green_Tea_leaves_and_tea.jpg",
+  "CHÁ PRETO":            "https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Black_tea_leaves_steeping_in_a_cup.jpg/300px-Black_tea_leaves_steeping_in_a_cup.jpg",
+  "CHÁ MATE":             "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Yerba_mate_Argent.jpg/300px-Yerba_mate_Argent.jpg",
+  "BOLDO":                "https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Plectranthus_barbatus.jpg/300px-Plectranthus_barbatus.jpg",
+
+  // ── Mercado ─────────────────────────────────────────────────
+  "OVO BRANCO":           "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Chicken_eggs_2009.jpg/300px-Chicken_eggs_2009.jpg",
+  "OVO CAIPIRA":          "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Chicken_eggs_2009.jpg/300px-Chicken_eggs_2009.jpg",
+  "OVO CODORNA":          "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Quail_eggs.jpg/300px-Quail_eggs.jpg",
+  "AZEITE":               "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Oliveoil_refined.jpg/300px-Oliveoil_refined.jpg",
+  "ARROZ 1 KG":           "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/White_rice_select.jpg/300px-White_rice_select.jpg",
+  "ARROZ 5 KG":           "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/White_rice_select.jpg/300px-White_rice_select.jpg",
+  "ARROZ INTEGRAL 1 KG":  "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/White_rice_select.jpg/300px-White_rice_select.jpg",
+  "FEIJÃO CARIOCA":       "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Feijao_carioca.jpg/300px-Feijao_carioca.jpg",
+  "FEIJÃO PRETO":         "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Black_beans.jpg/300px-Black_beans.jpg",
+  "LEITE INTEGRAL ITALAC": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Milk_glass.jpg/300px-Milk_glass.jpg",
+  "LEITE CONDENSADO MOÇA": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Sweetened_Condensed_Milk_from_Sri_Lanka.jpg/300px-Sweetened_Condensed_Milk_from_Sri_Lanka.jpg",
+  "REQUEIJÃO BATAVO":     "https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Cheese_selection.jpg/300px-Cheese_selection.jpg",
+  "QUEIJO COALHO":        "https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Cheese_selection.jpg/300px-Cheese_selection.jpg",
+  "QUEIJO MEIA CURA":     "https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Cheese_selection.jpg/300px-Cheese_selection.jpg",
+  "MACARRÃO ESPAGUETE DONA BENTA": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Spaghetti-prepared.jpg/300px-Spaghetti-prepared.jpg",
+  "VINHO TINTO PERGOLA SUAVE": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/A_small_cup_of_coffee.JPG/300px-A_small_cup_of_coffee.JPG",
+};
+
+function getFoto(n) {
+  return FOTOS[n] || null;
+}
+
+const PRODUTOS_PADRAO=[
+  ...[ ['ABACATE','kg'],['ABACAXI','unidade'],['ABÓBORA JAPONESA','kg'],['ABÓBORA PESCOÇO','kg'],
+  ['ABOBRINHA ITALIANA','kg'],['ACEROLA','bandeja'],['ALHO','kg'],['AMEIXA NACIONAL','kg'],
+  ['AMEIXA RUBI MEL','bandeja'],['AVOCADO','kg'],['BANANA MAÇÃ','kg'],['BANANA NANICA','kg'],
+  ['BANANA PRATA','kg'],['BANANA TERRA','kg'],['BATATA ASTERIX','kg'],['BATATA BOLINHA','kg'],
+  ['BATATA DOCE BRANCA','kg'],['BATATA DOCE ROSADA','kg'],['BATATA DOCE ROXA','kg'],
+  ['BATATA INGLESA','kg'],['BERINJELA','kg'],['BETERRABA','kg'],['CAJU','bandeja'],
+  ['CAQUI CHOCOLATE','kg'],['CAQUI FUYU','kg'],['CAQUI RAMA FORTE','bandeja'],['CARÁ','kg'],
+  ['CARAMBOLA','bandeja'],['CEBOLA','kg'],['CEBOLA MINI','kg'],['CEBOLA ROXA','kg'],
+  ['CENOURA','kg'],['CEREJA','bandeja'],['CHUCHU','kg'],['COCO SECO','kg'],['COCO VERDE','unidade'],
+  ['GENGIBRE','kg'],['GOIABA BRANCA','kg'],['GOIABA VERMELHA','kg'],['INHAME','kg'],
+  ['JILÓ','kg'],['KIWI','bandeja'],['LARANJA','kg'],['LARANJA BAHIA','kg'],
+  ['LARANJA LIMA','kg'],['LIMÃO SICILIANO','kg'],['LIMÃO TAHITI','kg'],['MAÇÃ ARGENTINA','kg'],
+  ['MAÇÃ FUJI','kg'],['MAÇÃ GALA','kg'],['MAÇÃ VERDE','kg'],['MAMÃO FORMOSA','kg'],
+  ['MAMÃO PAPAYA','unidade'],['MANDIOCA COM CASCA','kg'],['MANDIOCA SEM CASCA','kg'],
+  ['MANDIOQUINHA','kg'],['MANGA BOURBON','kg'],['MANGA COQUINHO','kg'],['MANGA ESPADA','kg'],
+  ['MANGA PALMER','kg'],['MANGA TOMY','kg'],['MARACUJÁ','kg'],['MARACUJÁ DOCE','kg'],
+  ['MAXIXE','kg'],['MELANCIA','unidade'],['MELANCIA BABY','unidade'],['MELÃO GRAÚDO','unidade'],
+  ['MELÃO MIÚDO','unidade'],['MELÃO PELE SAPO','unidade'],['MELÃO REDINHA','unidade'],
+  ['MEXERICA CARIOCA','kg'],['MEXERICA MORGOT','kg'],['MEXERICA POKAN','kg'],
+  ['MIRTILO','bandeja'],['MORANGO','bandeja'],['NECTARINA','kg'],['NÊSPERA','bandeja'],
+  ['PEPINO CAIPIRA','kg'],['PEPINO COMUM','kg'],['PEPINO JAPONÊS','kg'],
+  ['PERA PORTUGUESA','kg'],['PERA WILLIANS','kg'],['PÊSSEGO NACIONAL','kg'],
+  ['PIMENTA CAMBUCI','kg'],['PIMENTÃO AMARELO','kg'],['PIMENTÃO VERDE','kg'],
+  ['PIMENTÃO VERMELHO','kg'],['PITAYA AMARELA','unidade'],['PITAYA BRANCA','unidade'],
+  ['PITAYA VERMELHA','unidade'],['QUIABO','kg'],['ROMÃ','unidade'],['TOMATE CARMEM','kg'],
+  ['TOMATE CEREJA','bandeja'],['TOMATE ITALIANO','kg'],['UVA CRINSON','bandeja'],
+  ['UVA ITÁLIA','bandeja'],['UVA NIAGARA','bandeja'],['UVA RUBI','bandeja'],
+  ['UVA THOMPSON','bandeja'],['UVA VITÓRIA','bandeja'],['VAGEM','kg']
+  ].map(([n,u])=>({n,u,c:'Frutas, verduras e legumes'})),
+  ...[ ['ACELGA','unidade'],['AGRIÃO','unidade'],['ALECRIM','unidade'],['ALFACE AMERICANA','unidade'],
+  ['ALFACE CRESPA','unidade'],['ALFACE FRIZZE','unidade'],['ALFACE LISA','unidade'],
+  ['ALFACE MIMOSA','unidade'],['ALFACE ROXA','unidade'],['ALHO PORÓ','unidade'],
+  ['ALMEIRÃO','unidade'],['BRÓCOLIS COMUM','unidade'],['BRÓCOLIS NINJA','unidade'],
+  ['CATALONIA','unidade'],['CEBOLINHA','unidade'],['COENTRO','unidade'],['COUVE','unidade'],
+  ['COUVE FLOR','unidade'],['ESPINAFRE','unidade'],['HORTELÃ','unidade'],['LOURO','unidade'],
+  ['MANJERICÃO','unidade'],['MOSTARDA','unidade'],['RABANETE','maço'],['REPOLHO ROXO','kg'],
+  ['REPOLHO VERDE','kg'],['RÚCULA','unidade'],['SALADA MISTA','unidade'],['SALSA','unidade'],
+  ['SALSÃO','unidade']
+  ].map(([n,u])=>({n,u,c:'Verduras'})),
+  ...[ ['AÇÚCAR DE COCO','grama'],['AÇÚCAR DEMERARA','grama'],['AÇÚCAR MASCAVO','grama'],
+  ['AMARANTO EM FLOCOS','grama'],['AMEIXA SECA SEM CAROÇO','grama'],['AMÊNDOA','grama'],
+  ['AMENDOIM CARAMELIZADO','grama'],['AMENDOIM CHOCOLATE','grama'],
+  ['AMENDOIM COM CASCA TORRADO','grama'],['AMENDOIM CROCANTE NATURAL','grama'],
+  ['AMENDOIM TORRADO COM SAL','grama'],['AMENDOIM TORRADO SEM SAL','grama'],
+  ['AVEIA EM FLOCOS','grama'],['AVELÃ','grama'],['BANANA CHIPS DOCE','grama'],
+  ['CACAU EM PÓ','grama'],['CANELA EM PAU','grama'],['CANELA EM PÓ','grama'],
+  ['CANJICA AMARELA','grama'],['CANJICA BRANCA','grama'],['CASTANHA DE CAJU','grama'],
+  ['CASTANHA DO PARÁ','grama'],['CRAMBERRY','grama'],['DAMASCO','grama'],
+  ['ERITRITOL CRISTAL','grama'],['ERVILHA SECA PARTIDA','grama'],['FARELO DE AVEIA','grama'],
+  ['FARINHA DE AMÊNDOA','grama'],['FARINHA DE ARROZ','grama'],['FARINHA DE AVEIA','grama'],
+  ['FARINHA DE COCO','grama'],['FARINHA DE MANDIOCA FINA','grama'],
+  ['FARINHA DE MANDIOCA GROSSA','grama'],['FARINHA DE TRIGO INTEGRAL','grama'],
+  ['FÉCULA DE BATATA','grama'],['FEIJÃO BRANCO','grama'],['FEIJÃO FRADINHO','grama'],
+  ['FEIJÃO PRETO','grama'],['FRUTAS CRISTALIZADAS','grama'],['FUBÁ','grama'],
+  ['GERGELIM BRANCO','grama'],['GERGELIM PRETO','grama'],['GOMA TAPIOCA PANTANAL','pacote'],
+  ['GRANOLA DE FRUTAS','grama'],['GRANOLA SEM AÇÚCAR','grama'],
+  ['LEITE DE COCO EM PÓ','grama'],['LEITE EM PÓ INTEGRAL','grama'],['LENTILHA','grama'],
+  ['MAÇÃ DESIDRATADA EM RODELAS','grama'],['MILHO DE PIPOCA','grama'],
+  ['MIX DE CASTANHAS','grama'],['MIX DE FRUTAS','grama'],['NOZES','grama'],
+  ['PEPITA DE GIRASSOL','grama'],['POLVILHO AZEDO','grama'],['POLVILHO DOCE','grama'],
+  ['QUINOA EM GRÃOS','grama'],['SAGU','grama'],['SAL ROSA FINO','grama'],
+  ['SEMENTE DE CHIA','grama'],['SEMENTE DE LINHAÇA DOURADA','grama'],
+  ['TAPIOCA GRANULADA','grama'],['TOMATE SECO','grama'],['UVA PASSA BRANCA','grama'],
+  ['UVA PASSA PRETA','grama'],['XYLITOL','grama']
+  ].map(([n,u])=>({n,u,c:'Grãos'})),
+  ...[ ['AÇAFRÃO','grama'],['ALHO EM FLOCOS','grama'],['ALHO EM PÓ','grama'],
+  ['CALDO DE CARNE','grama'],['CALDO DE GALINHA','grama'],['CALDO DE LEGUMES','grama'],
+  ['CEBOLA DESIDRATADA','grama'],['CEBOLA EM PÓ','grama'],
+  ['CHIMICHURRI COM PIMENTA','grama'],['CHIMICHURRI SEM PIMENTA','grama'],
+  ['COENTRO EM PÓ','grama'],['COLORAL','grama'],['COMINHO','grama'],
+  ['CREME DE CEBOLA','grama'],['CURRY','grama'],['ERVAS FINAS','grama'],
+  ['LEMON PEPPER','grama'],['LOURO EM FOLHAS','grama'],['MANJERICÃO','grama'],
+  ['ORÉGANO','grama'],['PÁPRICA DEFUMADA','grama'],['PÁPRICA DOCE','grama'],
+  ['PÁPRICA PICANTE','grama'],['PIMENTA CALABRESA EM FLOCOS','grama'],
+  ['PIMENTA DO REINO','grama'],['TEMPERO BAIANO','grama'],['TEMPERO GAÚCHO','grama'],
+  ['TEMPERO MINEIRO','grama'],['TOMILHO','grama'],['VINAGRETE','grama']
+  ].map(([n,u])=>({n,u,c:'Temperos'})),
+  ...[ ['PRÓPOLIS','frasco'],['MEL ISIS','frasco'],['MEL CAMPESTRE','frasco'],
+  ['ALCACHOFRA','grama'],['ALECRIM','grama'],['ANIS ESTRELADO','grama'],['ARNICA','grama'],
+  ['BOLDO','grama'],['CAMOMILA','grama'],['CAPIM CIDREIRA','grama'],['CARQUEJA','grama'],
+  ['CHÁ MATE','grama'],['CHÁ PRETO','grama'],['CHÁ VERDE','grama'],
+  ['DENTE DE LEÃO','grama'],['ERVA DOCE','grama'],['ESPINHEIRA SANTA','grama'],
+  ['FOLHA DE GRAVIOLA','grama'],['FUNCHO','grama'],['GINKGO BILOBA','grama'],
+  ['HIBISCO','grama'],['HORTELÃ','grama'],['MACELA','grama'],['MELISSA','grama'],
+  ['MULUNGU','grama'],['PATA DE VACA','grama'],['QUEBRA PEDRA','grama'],
+  ['SÁLVIA','grama'],['VALERIANA','grama']
+  ].map(([n,u])=>({n,u,c:'Chás'})),
+  ...[ ['ABACAXI SEM CASCA','unidade'],['ABÓBORA JAPONESA PICADA','pacote'],
+  ['ACELGA CORTADA','bandeja'],['BETERRABA FATIADA','pacote'],['BETERRABA RALADA','bandeja'],
+  ['CENOURA RALADA','bandeja'],['COUVE CORTADA','bandeja'],
+  ['MANGA EM PEDAÇOS','copo'],['MELÃO EM PEDAÇOS','copo'],['MIX PARA MAIONESE','pacote'],
+  ['MIX PARA SOPA','pacote'],['MIX PARA YAKISSOBA','bandeja'],['PEPINO RALADO','bandeja'],
+  ['REPOLHO VERDE RALADO','bandeja'],['SALADA DE FRUTAS','copo'],
+  ['SUCO NATURAL DE FRUTAS','frasco'],['ÁGUA DE COCO','frasco'],
+  ['BACON','grama'],['LINGUIÇA CALABRESA','grama']
+  ].map(([n,u])=>({n,u,c:'Alimentos processados'})),
+  ...[ ['AÇÚCAR REFINADO','unidade'],['ARROZ 1 KG','unidade'],['ARROZ 5 KG','unidade'],
+  ['ARROZ INTEGRAL 1 KG','unidade'],['ATUM RALADO','lata'],['AZEITE','unidade'],
+  ['BISCOITO PANCO CREAM CRACKER','pacote'],['CAFÉ PILÃO 500 GR','pacote'],
+  ['CATCHUP QUERO 400 GR','unidade'],['COCA COLA 2 LITROS','unidade'],
+  ['COCA COLA 350 ML','unidade'],['CREME DE LEITE ITALAC','unidade'],
+  ['DETERGENTE YPÊ','unidade'],['ENERGÉTICO MONSTER','unidade'],
+  ['ERVILHA EM CONSERVA','lata'],['EXTRATO DE TOMATE ELEFANTE','unidade'],
+  ['FARINHA DE TRIGO DONA BENTA','unidade'],['FAROFA TEMPERADA YOKI','unidade'],
+  ['FEIJÃO CARIOCA','unidade'],['FEIJÃO PRETO','unidade'],['FERMENTO EM PÓ ROYAL','unidade'],
+  ['IOGURTE BATAVO','unidade'],['LEITE CONDENSADO MOÇA','unidade'],
+  ['LEITE INTEGRAL ITALAC','unidade'],['LEITE ZERO LACTOSE PIRACANJUBA','unidade'],
+  ['MACARRÃO ESPAGUETE DONA BENTA','unidade'],["MAIONESE HELLMAN'S 500 GR",'unidade'],
+  ['MARGARINA DORIANA','unidade'],['MILHO VERDE EM CONSERVA','lata'],
+  ['MOLHO TOMATE QUERO','unidade'],['MOLHO SHOYU SAKURA','unidade'],
+  ['ÓLEO SOJA','unidade'],['OVO BRANCO','bandeja'],['OVO CAIPIRA','bandeja'],
+  ['OVO CODORNA','bandeja'],['PÃO DE FORMA INTEGRAL PANCO','unidade'],
+  ['PÃO DE FORMA PANCO','unidade'],['QUEIJO COALHO','pacote'],
+  ['QUEIJO MEIA CURA','unidade'],['QUEIJO RALADO','pacote'],
+  ['REQUEIJÃO BATAVO','unidade'],['SAL GROSSO','unidade'],['SAL REFINADO','unidade'],
+  ['SALSICHA PERDIGÃO 500 GR','pacote'],['SARDINHA EM MOLHO DE TOMATE','lata'],
+  ['SHIMEJI','unidade'],['SPRITE 2 LITROS','unidade'],['TOFU','unidade'],
+  ['VINAGRE ÁLCOOL','unidade'],['VINHO TINTO PERGOLA SUAVE','unidade']
+  ].map(([n,u])=>({n,u,c:'Mercado'})),
+].map((p,i)=>({...p,id:i+1,ativo:true,emoji:'',foto:getFoto(p.n)}));
+
+
+
+
+// Produtos locais: se existir uma lista antiga incompleta no navegador, substitui pela lista completa.
 let produtosAdmin=JSON.parse(localStorage.getItem('horta_produtos_admin')||'null');
-if(!produtosAdmin){
-  // Seeding inicial simplificado
-  produtosAdmin=[
-    {id:1,n:'TOMATE CARMEM',u:'kg',c:'Frutas, verduras e legumes',ativo:true,foto:null},
-    {id:2,n:'ALFACE CRESPA',u:'unidade',c:'Verduras',ativo:true,foto:null},
-    {id:3,n:'BANANA NANICA',u:'kg',c:'Frutas, verduras e legumes',ativo:true,foto:null},
-    {id:4,n:'CENOURA',u:'kg',c:'Frutas, verduras e legumes',ativo:true,foto:null},
-    {id:5,n:'ARROZ 1 KG',u:'unidade',c:'Mercado',ativo:true,foto:null},
-    {id:6,n:'FEIJÃO CARIOCA',u:'unidade',c:'Mercado',ativo:true,foto:null},
-    {id:7,n:'AMENDOIM TORRADO COM SAL',u:'grama',c:'Grãos',ativo:true,foto:null},
-    {id:8,n:'CAMOMILA',u:'grama',c:'Chás',ativo:true,foto:null},
-    {id:9,n:'ORÉGANO',u:'grama',c:'Temperos',ativo:true,foto:null},
-    {id:10,n:'SUCO NATURAL DE FRUTAS',u:'frasco',c:'Alimentos processados',ativo:true,foto:null},
-  ];
+if(!produtosAdmin || !Array.isArray(produtosAdmin) || produtosAdmin.length<100){
+  produtosAdmin=PRODUTOS_PADRAO;
   localStorage.setItem('horta_produtos_admin',JSON.stringify(produtosAdmin));
 }
 let nextProdId=Math.max(...produtosAdmin.map(p=>p.id))+1;
@@ -684,14 +992,14 @@ function toggleLoja(){
   lojaAberta=!lojaAberta;
   localStorage.setItem('horta_loja_aberta',lojaAberta);
   atuLojaUI();renderLojaPage();
-  toast(lojaAberta?'✅ Loja marcada como aberta':'🔴 Loja marcada como fechada',lojaAberta?'':'erro');
+  toast(lojaAberta?'Loja marcada como aberta':'Loja marcada como fechada',lojaAberta?'':'erro');
 }
 function renderLojaPage(){
   const a=document.getElementById('status-big-area');
   if(lojaAberta){
-    a.innerHTML=`<div class="s-icon">🟢</div><h2 style="color:var(--g2)">Loja Aberta</h2><p>Os clientes podem fazer pedidos agora.</p><button class="btn-status btn-fechar" onclick="toggleLoja()">Fechar loja</button>`;
+    a.innerHTML=`<h2 style="color:var(--g2)">Loja Aberta</h2><p>Os clientes podem fazer pedidos agora.</p><button class="btn-status btn-fechar" onclick="toggleLoja()">Fechar loja</button>`;
   } else {
-    a.innerHTML=`<div class="s-icon">🔴</div><h2 style="color:var(--danger)">Loja Fechada</h2><p>O catálogo está visível, mas pedidos pausados.</p><button class="btn-status btn-abrir" onclick="toggleLoja()">Abrir loja</button>`;
+    a.innerHTML=`<h2 style="color:var(--danger)">Loja Fechada</h2><p>O catálogo está visível, mas pedidos pausados.</p><button class="btn-status btn-abrir" onclick="toggleLoja()">Abrir loja</button>`;
   }
 }
 function renderHorarios(){
@@ -750,7 +1058,7 @@ async function renderPedidos(){
   document.getElementById('badge-pedidos').textContent=novos+prep;
 
   if(!filtrados.length){
-    lista.innerHTML=`<div class="pedidos-empty"><div class="ic">📭</div><p>Nenhum pedido ${filtroAtual==='todos'?'ainda':'nesta categoria'}.</p></div>`;return;
+    lista.innerHTML=`<div class="pedidos-empty"><p>Nenhum pedido ${filtroAtual==='todos'?'ainda':'nesta categoria'}.</p></div>`;return;
   }
 
   lista.innerHTML=filtrados.map(p=>{
@@ -768,11 +1076,11 @@ async function renderPedidos(){
         </div>
         <span class="pill ${pilCls}">${p.status}</span>
       </div>
-      <div class="pedido-nome">👤 ${p.nome}</div>
-      ${p.endereco?`<div class="pedido-end">📍 ${p.endereco}</div>`:''}
-      ${p.tel?`<div class="pedido-end">📱 ${p.tel}</div>`:''}
+      <div class="pedido-nome"> ${p.nome}</div>
+      ${p.endereco?`<div class="pedido-end"> ${p.endereco}</div>`:''}
+      ${p.tel?`<div class="pedido-end"> ${p.tel}</div>`:''}
       <div class="pedido-itens" style="white-space:pre-line">${itensHtml}</div>
-      ${p.obs?`<div class="pedido-obs">📝 ${p.obs}</div>`:''}
+      ${p.obs?`<div class="pedido-obs"> ${p.obs}</div>`:''}
       <div class="valor-final-box">
         <label>Valor final</label>
         <input type="text" id="valor-${p.id}" value="${formatarValorInput(p.total||p.valor||p.valor_final||0)}" placeholder="R$ 0,00">
@@ -783,7 +1091,7 @@ async function renderPedidos(){
           ${STATUS_ORDER.map(s=>`<option value="${s}" ${s===p.status?'selected':''}>${s}</option>`).join('')}
         </select>
         ${p.tel?`<button class="pbtn pbtn-wpp" onclick="enviarMensagemStatus('${p.id}')">WhatsApp</button>`:''}
-        <button class="pbtn pbtn-del" onclick="removerPedido('${p.id}')">✕</button>
+        <button class="pbtn pbtn-del" onclick="removerPedido('${p.id}')"></button>
       </div>
     </div>`;
   }).join('');
@@ -801,11 +1109,11 @@ function telLimpo(p){
 function itensTexto(p){return (p.itens||[]).map(i=>`• ${i.qtd||''} de ${i.nome||i.n||''}`.trim()).join('\n');}
 function montarMensagemPagamento(p){
   const valorFinal=moedaBR(p.valor_final||p.total||p.valor||0);
-  return `Olá, ${p.nome}! 🌿\n\nRecebemos seu pedido e já separamos tudo por aqui.\n\nO valor total ficou em *${valorFinal}*.\n\nQual vai ser a forma de pagamento?`;
+  return `Olá, ${p.nome}! \n\nRecebemos seu pedido e já separamos tudo por aqui.\n\nO valor total ficou em *${valorFinal}*.\n\nQual vai ser a forma de pagamento?`;
 }
 function montarMensagemStatus(p){
   if(p.status==='Aguardando pagamento' || valorNumerico(p.valor_final||p.total||p.valor||0)>0)return montarMensagemPagamento(p);
-  return `🌿 *Horta em Casa*\nOlá ${p.nome}! Seu pedido está *${String(p.status||'Recebido').toLowerCase()}*. 😊`;
+  return ` *Horta em Casa*\nOlá ${p.nome}! Seu pedido está *${String(p.status||'Recebido').toLowerCase()}*. `;
 }
 function abrirWhatsAppPedido(p,msg){
   const tel=telLimpo(p);
@@ -843,7 +1151,7 @@ async function atuStatus(id,status){
     renderPedidos();
     abrirWhatsAppPedido(p,montarMensagemPagamento(p));
     renderRelatorios();
-    toast('💳 Status atualizado e mensagem de pagamento aberta no WhatsApp');
+    toast('Status atualizado e mensagem de pagamento aberta no WhatsApp');
     return;
   }
   p.status=status;
@@ -851,7 +1159,7 @@ async function atuStatus(id,status){
   if(p.sbId){sbPatch('pedidos',`id=eq.${p.sbId}`,{status}).catch(()=>{});}
   renderPedidos();
   renderRelatorios();
-  toast('✅ Status atualizado para: '+status);
+  toast('Status atualizado para: '+status);
 }
 
 function valorNumerico(v){
@@ -880,7 +1188,7 @@ async function salvarValorPedido(id, silencioso=false){
   }
   inp.value=formatarValorInput(total);
   renderRelatorios();
-  if(!silencioso)toast('💰 Valor final salvo no pedido');
+  if(!silencioso)toast('Valor final salvo no pedido');
   return total;
 }
 
@@ -914,33 +1222,32 @@ function adicionarProduto(){
   renderProdutosAdmin();
   document.getElementById('np-nome').value='';
   document.getElementById('np-foto').value='';
-  toast('✅ Produto adicionado: '+cap(n));
+  toast('Produto adicionado: '+cap(n));
 }
 
 function renderProdutosAdmin(){
   const busca=(document.getElementById('busca-prod')?.value||'').toLowerCase();
   const catF=document.getElementById('filtro-cat-admin')?.value||'';
   const grid=document.getElementById('prod-admin-grid');
-  const lista=produtosAdmin.filter(p=>
-    p.n.toLowerCase().includes(busca)&&
+  const lista=produtosAdmin.filter(p=>p.n.toLowerCase().includes(busca)&&
     (!catF||p.c===catF)
   );
   if(!lista.length){grid.innerHTML=`<div style="grid-column:1/-1;text-align:center;color:var(--cinza);padding:2rem;">Nenhum produto encontrado.</div>`;return;}
   grid.innerHTML=lista.map(p=>{
     const pausado=p.ativo===false;
     const imgHtml=p.foto
-      ?`<img src="${p.foto}" alt="${p.n}" onerror="this.outerHTML='<div class=pa-img-ph>${p.emoji||emojiAuto(p.n,p.c)}</div>'">`
-      :`<div class="pa-img-ph">${p.emoji||emojiAuto(p.n,p.c)}</div>`;
+      ?`<img src="${p.foto}" alt="${p.n}" onerror="this.outerHTML='<div class=pa-img-ph>Sem foto</div>'">`
+      :`<div class="pa-img-ph">Sem foto</div>`;
     return `<div class="prod-admin-card ${pausado?'pausado':''}">
       <div class="pa-img-wrap">
         ${imgHtml}
-        <button class="pa-edit-btn" onclick="abrirFoto(${p.id})">📷 Foto</button>
+        <button class="pa-edit-btn" onclick="abrirFoto(${p.id})">Foto</button>
       </div>
       <div class="pa-info">
         <div class="pa-nome">${cap(p.n)}</div>
         <div class="pa-cat">${CATS[p.c]||''} ${p.c||''} · ${p.u}</div>
         <div class="pa-ativo-toggle">
-          <span class="toggle-label" style="${pausado?'color:var(--warning);font-weight:700;':''}">${pausado?'⏸ Indisponível':'✅ Disponível'}</span>
+          <span class="toggle-label" style="${pausado?'color:var(--warning);font-weight:700;':''}">${pausado?'Indisponível':'Disponível'}</span>
           <button class="toggle-sw ${pausado?'':'on'}" style="${pausado?'background:var(--warning)!important;':''}" onclick="toggleAtivo(${p.id})" title="${pausado?'Clique para disponibilizar':'Clique para pausar'}"></button>
         </div>
       </div>
@@ -954,7 +1261,7 @@ function toggleAtivo(id){
   p.ativo=!p.ativo;
   salvarProdos();
   renderProdutosAdmin();
-  toast(p.ativo?`✅ ${cap(p.n)} disponível novamente`:`⏸ ${cap(p.n)} marcado como indisponível`,'');
+  toast(p.ativo?`${cap(p.n)} disponível novamente`:`${cap(p.n)} marcado como indisponível`,'');
 }
 
 // ── FOTO ──────────────────────────────────────────────────────────────
@@ -976,14 +1283,14 @@ function atuFotoPreview(url,emoji){
 function previewFotoUrl(url){
   if(!prodEditId)return;
   const p=produtosAdmin.find(x=>x.id===prodEditId);
-  atuFotoPreview(url,p?.emoji||'📦');
+  atuFotoPreview(url,'Sem foto');
 }
 function previewFotoFile(inp){
   const file=inp.files[0];if(!file)return;
   const reader=new FileReader();
   reader.onload=e=>{
     fotoTempBlob=e.target.result;
-    atuFotoPreview(fotoTempBlob,'📦');
+    atuFotoPreview(fotoTempBlob,'');
     document.getElementById('foto-url-inp').value='';
   };
   reader.readAsDataURL(file);
@@ -997,7 +1304,7 @@ function salvarFoto(){
   salvarProdos();
   renderProdutosAdmin();
   fecharFoto();
-  toast('📷 Foto atualizada!');
+  toast('Foto atualizada!');
 }
 
 // ── OFERTAS ──────────────────────────────────────────────────────────
@@ -1114,7 +1421,7 @@ async function addOferta(tipo){
     const oferta=rowToOferta(salvo);
     if(tipo==='dia'){ofertasDia.unshift(oferta);localStorage.setItem('horta_ofertas_dia',JSON.stringify(ofertasDia));renderOfertasDia();}
     else{ofertasSemana.unshift(oferta);localStorage.setItem('horta_ofertas_semana',JSON.stringify(ofertasSemana));renderOfertasSemana();}
-    toast('🏷️ Oferta publicada no site!');
+    toast('Oferta publicada no site!');
   }catch(e){
     console.error(e);
     if(tipo==='dia'){
